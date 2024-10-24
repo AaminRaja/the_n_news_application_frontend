@@ -1,0 +1,396 @@
+.allNewsSection{
+    /* border: 1px solid red; */
+    width: 100%;
+    min-height: 700px;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #F2EEE3;
+}
+
+/* & latest news */
+
+.latestNewsContainer{
+    /* border: 1px solid red; */
+    width: 24%;
+    margin: 3px;
+    padding: 10px;
+}
+
+.latestTitleDiv{
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.latestTitle{
+    font-size: 20px;
+    font-weight: 700;
+    font-family: "Bebas Neue", system-ui;
+    letter-spacing: 1px;
+}
+
+.latestNewsesContainer{
+    margin-top: 5px;
+}
+
+.latestNewsSingleDiv{
+    width: 100%;
+    padding: 5px 4px;
+    margin-bottom: 5px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.latestNewsSingleDiv:hover{
+    background-color: rgb(213, 175, 181);
+}
+
+.latestNewsSubCategorySaveDiv{
+    /* border: 1px solid red; */
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.latestNewsSubCategory{
+    color: #D1071F;
+    font-weight: 500;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    letter-spacing: 1px;
+}
+
+.latestNewsBookmark{
+    color: #D1071F;
+    visibility: hidden;
+}
+
+.latestNewsSingleDiv:hover .latestNewsBookmark{
+    visibility: visible;
+}
+
+.latestNewsHeading{
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 22px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.buttonDiv{
+    /* padding: 5px; */
+    margin-top: 10px;
+    background-color: transparent;
+}
+
+.button{
+    cursor: pointer;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 32px;
+    font-size: 15px;
+    font-weight: 400;
+    border-radius: 20px;
+    padding: 0px 10px;
+    margin: 3px 0px;
+    color: #1B1C1E;
+    /* background-color: #D1071F; */
+    /* background-color: white; */
+    border: 1.5px solid #1B1C1E;
+    transition: all 0.2s ease-in-out;
+}
+
+.button:hover{
+    background-color: #ECE2C8;
+    background-color: rgb(213, 175, 181);
+}
+
+/* & topten */
+
+.topTenContainer{
+    /* border: 1px solid green; */
+    width: 52%;
+    margin: 3px;
+    background-color: #ECE2C8;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+
+/* ~ First */
+
+.topTenFirstDiv{
+    width: 100%;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.topTenFirstSubCategorySaveDiv{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.topTenFirstSubCategory{
+    color: #D1071F;
+    font-weight: 500;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    letter-spacing: 1px;   
+}
+
+.topTenFirstBookmark{
+    color: #D1071F;
+    visibility: hidden;
+}
+
+.topTenFirstDiv:hover .topTenFirstBookmark{
+    visibility: visible;
+}
+
+.topTenFirstHeading{
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 23px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.topTenFirstPublishDiv{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.topTenFirstSubEditor, .topTenFirstTime{
+    font-weight: 500;
+    color: rgb(94, 90, 90);
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+}
+
+.topTenFirstPhotoContainer{
+    height: 400px;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.topTenFirstPhoto{
+    height: 100%;
+}
+
+/* ~ Rest */
+
+.topTenRestDiv{
+    width: 100%;
+    /* border: 1px solid red; */
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+    gap: 20px;
+}
+
+.topTenRestSingleDiv{
+    /* border: 1px solid red; */
+    width: 100%;
+    height: 250px;
+    display: flex;
+    cursor: pointer;
+}
+
+.topTenRestSingleLeftDiv{
+    width: 55%;
+    margin-right: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.topTenRestSubCategorySaveDiv{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.topTenRestSubCategory{
+    color: #D1071F;
+    font-weight: 500;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    letter-spacing: 1px;  
+}
+
+.topTenRestBookmark{
+    color: #D1071F;
+    visibility: hidden;
+}
+
+.topTenRestSingleDiv:hover .topTenRestBookmark{
+    visibility: visible;
+}
+
+.topTenRestHeading{
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 23px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.topTenRestPublishDiv{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.topTenRestSubEditor, .topTenRestTime{
+    font-weight: 500;
+    color: rgb(94, 90, 90);
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+}
+
+/* .topTenRestSummaryDiv{
+    white-space: wrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+} */
+
+.topTenRestSummary{
+    font-size: 15px;
+    font-weight: 450;
+    color: #171750;
+}
+
+.topTenRestSingleRightDiv{
+    /* width: 50%; */
+    /* height: 250px; */
+    height: 100%;
+    width: 45%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 5px;
+}
+
+.topTenRestPhoto{
+    height: 100%;
+}
+
+/* & Editor's pick */
+
+.editorsPicContainer{
+    /* border: 1px solid blue; */
+    width: 24%;
+    margin: 3px;
+    padding: 10px;
+}
+
+.editorsTitleDiv{
+    /* border: 1px solid black; */
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.editorsTitle{
+    font-size: 20px;
+    font-weight: 700;
+    font-family: "Bebas Neue", system-ui;
+    letter-spacing: 1px;
+}
+
+.editorsPickNewsesContainer{
+    /* border: 1px solid green; */
+    margin-top: 5px;
+}
+
+.editorsPickSingleDiv{
+    /* border: 1px solid yellow; */
+    width: 100%;
+    padding: 15px 7px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.editorsPickSingleDiv:hover{
+    background-color: rgb(213, 175, 181);
+}
+
+.editorsPickPhotoContainer{
+    height: 200px;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.editorsPickPhoto{
+    height: 100%;
+}
+
+.editorsPickSubCategorySaveDiv{
+    /* border: 1px solid red; */
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.editorsPickSubCategory{
+    color: #D1071F;
+    font-weight: 500;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    letter-spacing: 1px;
+}
+
+.editorsPickBookmark{
+    color: #D1071F;
+    visibility: hidden;
+}
+
+.editorsPickSingleDiv:hover .editorsPickBookmark{
+    visibility: visible;
+}
+
+.editorsPickHeading{
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 23px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.editorsPickPublishDiv{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.editorsPickSubEditor, .editorsPickTime{
+    font-weight: 500;
+    color: rgb(94, 90, 90);
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+}

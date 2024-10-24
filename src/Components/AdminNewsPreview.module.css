@@ -1,0 +1,125 @@
+.previewContainer{
+    /* padding-top: 200px; */
+    background-color: #F2F2F2;
+}
+
+.singleNewscontainer{
+    /* border: 1px solid red; */
+    width: 67%;
+    height: fit-content;
+    display: flex;
+    align-items: start;
+    justify-content: start;
+    gap: 10px;
+    flex-direction: column;
+    padding: 30px;
+    height: 100%;
+}
+
+.singleNewscontainerBlurred{
+    filter: blur(15px);
+    pointer-events: none;
+}
+
+.singleNewsCategory{
+    color: #D1071F;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.singleNewsSubCategorySaveDiv{
+    /* border: 1px solid red; */
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.singleNewsSubCategory{
+    color: #D1071F;
+    font-weight: 500;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    letter-spacing: 1px;
+}
+
+.singleNewsBtnsDiv{
+    /* border: solid yellow; */
+    display: flex;
+    gap: 5px;
+}
+
+/* .overlayBtnDiv{
+    border: 1px solid green;
+} */
+
+.singleNewsBtn{
+    height: 25px;
+    padding: 5px 5px;
+    border-radius: 0px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    border: none;
+    background-color: #171750;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.singleNewsBtn:hover{
+    background-color: #d30720;
+}
+
+.singleNewsHeadingDiv{
+    margin: 10px 0px;
+}
+
+.singleNewsHeading{
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 30px;
+}
+
+.singleNewsSubEditordiv{
+    /* border: 1px solid yellow; */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: space-between;
+}
+
+.singleNewsSubEditor, .time{
+    color: gray;
+    font-weight: 400;
+    color: #D1071F;
+}
+
+.singleNewsSubEditor{
+    color: #171750;
+}
+
+.singleNewsSummaryDiv{
+    margin: 20px 0px;
+}
+
+.singleNewsSummary{
+    font-family: "Besley", serif;
+    font-style: italic;
+    line-height: 23px;
+    font-weight: 500;
+    color: rgb(43, 43, 43);
+}
+
+.singleNewsPhotoDiv{
+    /* border: 2px solid yellow; */
+    width: 100%;
+}
+
+.singleNewsPhoto{
+    width: 100%;
+}
+
+.singleNewsLocation{
+    font-family: "Besley", serif;
+}

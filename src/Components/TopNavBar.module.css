@@ -1,0 +1,170 @@
+.container{
+    /* border: 1px solid red; */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    padding: 0px 90px 0px 30px;
+    width: 100%;
+    background-color: white;
+    z-index: 1000;
+    position: fixed;
+    box-shadow: 0px 0px 5px 0px rgb(199, 195, 195);
+}
+
+.containerBlurred{
+    filter: blur(5px);
+    pointer-events: none;
+}
+
+.topNavLeftdiv{
+    /* border: 1px solid green; */
+    gap: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.LogoImgDiv{
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+    
+.LogoImg{
+    height: 60px;
+}
+
+.Title{
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    color: rgb(23, 23, 80);
+}
+
+.Title span{
+    color: #D1071F;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+/* &&&& */
+
+.topNavRightdiv{
+    /* border: 1px solid green; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 17%;
+    gap: 30px;
+}    
+
+.topNavUsernameDiv{
+    /* border: 1px solid blue; */
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    position: relative;
+    cursor: pointer;
+}
+
+.topNavLinksDiv, .topNavUsernameDiv div{
+    /* border: 1px solid red; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.topNavUsername{
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    font-size: 20px;
+    color: rgb(23, 23, 80);
+    cursor: pointer;
+    font-family: "SUSE", sans-serif;
+}
+
+.topNavLink{
+    color: inherit;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 20px;
+    color: #D1071F;
+    font-family: "SUSE", sans-serif;
+}
+
+.userdrop{
+    /* border: 1px solid red; */
+    position: absolute;
+    z-index: 1000;
+    top: 27px;
+    /* right: 20px; */
+    width: 130%;
+    height: 100px;
+    background-color: rgb(182, 209, 218);
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px 0px lightgray;
+}
+
+.userdrop ul{
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.userdrop ul li{
+    height: 20px;
+    font-weight: 450;
+    color: rgb(5, 5, 72);
+    transition: all 0.2s ease-in-out;
+}
+
+.userdrop ul li:hover{
+    color: rgb(3, 86, 3);
+    transform: scale(101%);
+}
+
+/* @media (min-width:800px){
+    .container{
+        padding: 0px 100px 0px 30px;
+        height: 70px;
+    }
+}
+
+@media (min-width:600px) and (max-width:800px){
+    .container{
+        padding: 0px 70px 0px 30px;
+        height: 60px;
+    }
+}
+
+@media (min-width:500px) and (max-width:600px){
+    .container{
+        padding: 0px 40px 0px 30px;
+        height: 60px;
+    }
+}
+
+@media (min-width:400px) and (max-width:500px){
+    .container{
+        padding: 0px 10px 0px 30px;
+        height: 50px;
+    }
+}
+
+@media (min-width:300px) and (max-width:400px){
+    .container{
+        padding: 0px 5px 0px 10px;
+        height: 40px;
+    }
+}
+
+@media (min-width:0px) and (max-width:300px){
+    .container{
+        padding: 0px 2px 0px 10px;
+        height: 30px;
+    }
+} */

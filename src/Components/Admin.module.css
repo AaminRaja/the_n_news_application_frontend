@@ -1,0 +1,15 @@
+.adminContainer{
+    /* border: 1px solid red; */
+    min-height: 700px;
+    padding: 60px 0px 0px 0px;
+}
+
+.adminContainerBlurred{
+    filter: blur(15px);
+}
+
+.bottomNavBarContainer{
+    width: 100%;
+    position: fixed;
+    z-index: 100;
+}

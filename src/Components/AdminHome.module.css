@@ -1,0 +1,349 @@
+.adminHomeContainer{
+    /* border: 1px solid blue; */
+    position: absolute;
+    top: 160px;
+    width: 100%;
+    min-height: 700px;
+    padding-bottom: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.addNewsContainer{
+    /* border: 1px solid red; */
+    width: 60%;
+    min-height: 700px;
+    /* border-radius: 25px; */
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    gap: 25px;
+    margin: 40px;
+    background-color: #E3E7F2;
+    box-shadow: 0px 0px 3px 0px gray;
+}
+
+.pageTitileDiv{
+    border-bottom: 2px solid #171750;
+}
+
+.pageTitile{
+    font-size: 22px;
+}
+
+.pageTitileAdd{
+    font-family: "Signika Negative", system-ui;
+    color: #DE0A22;
+}
+
+.pageTitileNews{
+    font-family: "Signika Negative", system-ui;
+    color: #171750;
+}
+
+/* ? */
+
+.selectButtonsListDiv{
+    /* border: 1px solid blue; */
+    width: 60%;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.headingDiv{
+    padding: 2px;
+}
+
+.heading{
+    color: #171750;
+}
+
+.selectButtonListDiv{
+    /* border: 1px solid red; */
+    position: relative;
+    height: 30px;
+    width: 40%;
+}
+
+.selectBtn{
+    /* height: 30px; */
+    /* height: 30px; */
+    padding: 3px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #97824d;
+    color: white;
+    /* border-radius: 7px; */
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+}
+
+.dropDownIcon{
+    /* border: 1px solid green; */
+    display: flex;
+    height: 100%;
+    padding-top: 5px;
+    align-items: center;
+    justify-content: center;
+}
+
+.selectListDiv{
+    border: 3px solid gray;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+}
+
+/* .selectListBtnDiv{
+    border: 1px solid green;
+} */
+
+.selectListBtn{
+    width: 100%;
+    height: 25px;
+    padding: 0px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #97824d;
+    color: white;
+    border-radius: 0px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+}
+
+.selectListBtn:hover{
+    background-color: #967318;
+}
+
+.errorDiv{
+    /* border: 1px solid yellow; */
+    width: 100%;
+    height: 20px;
+    padding: 1px;
+}
+
+.error{
+    font-weight: 400;
+    color: #DE0A22;
+}
+
+
+/* ??? */
+
+.form{
+    /* border: 1px solid green; */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* ??? */
+
+.formFirstDiv{
+    /* border: 1px solid red; */
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.firstDivInputErrorDiv{
+    /* border: 1px solid yellow; */
+    width: 29%;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+}
+
+.firstDivInputDiv{
+    width: 100%;
+}
+
+.firstDivInput{
+    width: 100%;
+    padding: 5px;
+    outline: none;
+    border: 2px solid #171750;
+    background-color: transparent;
+}
+
+.firstDivInput::placeholder{
+    color: #171750;
+}
+
+/* ??? */
+
+/* .formSecondDiv{
+    border: 1px solid red;
+} */
+
+.SecondDivtextAreaDiv{
+    width: 100%;
+}
+
+.SecondDivtextArea{
+    width: 100%;
+    background-color: transparent;
+    padding: 5px;
+    outline: none;
+    border: 2px solid #171750;
+    resize: none;
+}
+
+.firstDivInput::placeholder{
+    color: #171750;
+}
+
+/* ??? */
+
+.formThirdDiv{
+    /* border: 1px solid red; */
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.formThirdDivTextAreaDiv{
+    /* border: 1px solid green; */
+    width: 100%;
+}
+
+.formThirdDivTextArea{
+    width: 100%;
+    padding: 5px;
+    outline: none;
+    border: 2px solid #171750;
+    background-color: transparent; 
+    resize: none;  
+}
+
+/* ??? */
+
+.formFourthDivTextAreaDiv{
+    width: 100%;   
+}
+
+.formFourthDivTextArea{
+    width: 100%;
+    padding: 5px;
+    outline: none;
+    border: 2px solid #171750;
+    background-color: transparent; 
+    resize: none;
+}
+
+/* ??? */
+
+/* .addContentBtnDiv{
+    border: 1px solid red;
+} */
+
+.addContentBtn{
+    padding: 3px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #97824d;
+    color: white;
+    /* border-radius: 7px; */
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+}
+
+.plusIconSpan{
+    /* border: 1px solid green; */
+    height: 100%;
+    padding-top: 2px;
+    margin-left: 2px;
+}
+
+/* ??? */
+
+.paragraphsDiv{
+    /* border: 1px solid red; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+}
+
+.paragraphDiv{
+    /* border: 1px solid green; */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    gap: 10px;
+}
+
+.removeBtn{
+    padding: 3px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #DE0A22;
+    color: white;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+}
+
+.paragraphTextAreaDiv{
+    /* border: 1px solid pink; */
+    width: 100%;
+}
+
+.paragraphTextArea{
+    width: 100%;
+    resize: none;
+    background-color: transparent;
+    padding: 5px;
+    outline: none;
+    border: 2px solid #171750;
+}
+
+.newParaBtn{
+    padding: 3px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #171750;
+    color: white;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+}
+
+/* ??? */
+
+.previewBtn{
+    padding: 3px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #7287B6;
+    color: white;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+}
+
+/* ??? */
+
+.previewContainer{
+    width: 100%;
+}
