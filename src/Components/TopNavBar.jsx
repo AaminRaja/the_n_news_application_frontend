@@ -78,9 +78,11 @@ const TopNavBar = () => {
     }
 
     useEffect(() => {
-        let userInLocalStorage = JSON.parse(localStorage.getItem('user'))
+        // let userInLocalStorage = JSON.parse(localStorage.getItem('user'))
+        let userInLocalStorage = localStorage.getItem('user')
         console.log(userInLocalStorage);
-        if(userInLocalStorage){
+        console.log(Boolean(userInLocalStorage));
+        if(userInLocalStorage && userInLocalStorage !== "undefined"){
             setUserLogged(true)
             setNavState('logout')
             setUsername(JSON.parse(localStorage.getItem('user')).Username)

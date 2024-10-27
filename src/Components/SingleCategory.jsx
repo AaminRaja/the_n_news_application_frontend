@@ -30,7 +30,7 @@ const SingleCategory = () => {
         let accessToken = JSON.parse(localStorage.getItem('accessToken'))
         // console.log(`accessToken in NewsHome : ${accessToken}`);
   
-        let response = await axios.get(`http://localhost:8080/api/news/fetchEditorPick?currentPageNumber=${currentPageNumber}&newsPerPage=${newsPerPage}`, {
+        let response = await axios.get(`${process.env.REACT_APP_API_URL}/news/fetchEditorPick?currentPageNumber=${currentPageNumber}&newsPerPage=${newsPerPage}`, {
             headers:{
               'authorization': `Bearer ${accessToken}`
             },
@@ -46,7 +46,7 @@ const SingleCategory = () => {
         if(error.response && error.response.status === 403 && error.response.data.message === "Access token expired"){
           try {
             let user = JSON.parse(localStorage.getItem('user'))
-            let response = await axios.post('http://localhost:8080/api/user/refreshAccessToken', {user}, {withCredentials:true})
+            let response = await axios.post(`${process.env.REACT_APP_API_URL}/user/refreshAccessToken`, {user}, {withCredentials:true})
             console.log(response);
             console.log(response.data.error);
             if(!response.data.error){
@@ -55,7 +55,7 @@ const SingleCategory = () => {
               localStorage.setItem('accessToken', JSON.stringify(accessToken))
               console.log(JSON.parse(localStorage.getItem('accessToken')));
   
-              let {data} = await axios.get(`http://localhost:8080/api/news/fetchEditorPick?currentPageNumber=${currentPageNumber}&newsPerPage=${newsPerPage}`, {
+              let {data} = await axios.get(`${process.env.REACT_APP_API_URL}/news/fetchEditorPick?currentPageNumber=${currentPageNumber}&newsPerPage=${newsPerPage}`, {
                 headers:{
                   'authorization': `Bearer ${accessToken}`
                 },
@@ -85,7 +85,7 @@ const SingleCategory = () => {
       try {
         let accessToken = JSON.parse(localStorage.getItem('accessToken'))
         let user = JSON.parse(localStorage.getItem('user'))
-        let response = await axios.get(`http://localhost:8080/api/user/fetchSavedNews?user_id=${user._id}&currentPageNumber=${currentPageNumber}&newsPerPage=${newsPerPage}`, {
+        let response = await axios.get(`${process.env.REACT_APP_API_URL}/user/fetchSavedNews?user_id=${user._id}&currentPageNumber=${currentPageNumber}&newsPerPage=${newsPerPage}`, {
           headers:{
             'authorization': `Bearer ${accessToken}`
           },
@@ -100,7 +100,7 @@ const SingleCategory = () => {
         if(error.response && error.response.status === 403 && error.response.data.message === "Access token expired"){
           try {
             let user = JSON.parse(localStorage.getItem('user'))
-            let response = await axios.post('http://localhost:8080/api/user/refreshAccessToken', {user}, {withCredentials:true})
+            let response = await axios.post(`${process.env.REACT_APP_API_URL}/user/refreshAccessToken`, {user}, {withCredentials:true})
             console.log(response);
             if(!response.data.error){
               console.log(`accessToken:${response.data.newAccessToken}`)
@@ -108,7 +108,7 @@ const SingleCategory = () => {
               localStorage.setItem('accessToken', JSON.stringify(accessToken))
               console.log(JSON.parse(localStorage.getItem('accessToken')));
 
-              let {data} = await axios.get(`http://localhost:8080/api/user/fetchSavedNews?user_id=${user._id}&currentPageNumber=${currentPageNumber}&newsPerPage=${newsPerPage}`, {
+              let {data} = await axios.get(`${process.env.REACT_APP_API_URL}/user/fetchSavedNews?user_id=${user._id}&currentPageNumber=${currentPageNumber}&newsPerPage=${newsPerPage}`, {
                 headers:{
                     'authorization': `Bearer ${accessToken}`
                   },
@@ -126,7 +126,7 @@ const SingleCategory = () => {
     }else{
       // & categories
       try {
-        let response = await axios.get(`http://localhost:8080/api/news/filterByCategory?category=${category}&currentPageNumber=${currentPageNumber}&newsPerPage=${newsPerPage}`)
+        let response = await axios.get(`${process.env.REACT_APP_API_URL}/news/filterByCategory?category=${category}&currentPageNumber=${currentPageNumber}&newsPerPage=${newsPerPage}`)
         console.log(response);
         setNewsByCategory(response.data.filteredNewsByCategory)
         setTotalNumberOfPages(response.data.totalNumberOfPages)

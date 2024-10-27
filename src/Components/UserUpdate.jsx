@@ -11,8 +11,8 @@ const UserUpdate = () => {
   let[userVerified, setUserVerified] = useState(false)
   let[preferences, setPreferences] = useState([])
   let[isPassword, setIsPassword] = useState(true)
-  let[isConfirmPassword, setIsConfirmPassword] = useState(true)
-  let[isPasswordsMatched, setIsPasswordsMatched] = useState(true)
+//   let[isConfirmPassword, setIsConfirmPassword] = useState(true)
+//   let[isPasswordsMatched, setIsPasswordsMatched] = useState(true)
   let[passwordToVerify, setPasswordToVerify] = useState()
   let[currentPasswordError, setCurrentPasswordError] = useState(false)
   let[verifyPassVisible, setVerifyPassVisible] = useState(true)
@@ -39,7 +39,7 @@ const UserUpdate = () => {
               console.log(dataToRegister);
   
               let accessToken = JSON.parse(localStorage.getItem('accessToken'))
-              let {data} = await axios.put('http://localhost:8080/api/user/updateUserDetails', dataToRegister, {
+              let {data} = await axios.put(`${process.env.REACT_APP_API_URL}/user/updateUserDetails`, dataToRegister, {
                 headers:{
                   'authorization': `Bearer ${accessToken}`
                 },
@@ -63,7 +63,7 @@ const UserUpdate = () => {
           if(error.response && error.response.status === 403 && error.response.data.message === "Access token expired"){
             try {
                 let user = JSON.parse(localStorage.getItem('user'))
-                let response = await axios.post('http://localhost:8080/api/user/refreshAccessToken', {user}, {withCredentials:true})
+                let response = await axios.post(`${process.env.REACT_APP_API_URL}/user/refreshAccessToken`, {user}, {withCredentials:true})
                 console.log(response.data.error);
                 if(!response.data.error){
                 //   console.log(`accessToken:${response.data.newAccessToken}`);
@@ -72,7 +72,7 @@ const UserUpdate = () => {
                   
                   let dataToRegister = {...formData, Preferences:preferences, _id:user._id}
 
-                  let {data} = await axios.put('http://localhost:8080/api/user/updateUserDetails', dataToRegister, {
+                  let {data} = await axios.put(`${process.env.REACT_APP_API_URL}/user/updateUserDetails`, dataToRegister, {
                     headers:{
                       'authorization': `Bearer ${accessToken}`
                     },
@@ -136,7 +136,7 @@ const UserUpdate = () => {
   let submitCurrentPassword = async() => {
     try {
         let accessToken = JSON.parse(localStorage.getItem('accessToken'))
-        let {data} = await axios.get(`http://localhost:8080/api/user/verifyCurrentPassword/${user._id}?currentPassword=${passwordToVerify}`, {
+        let {data} = await axios.get(`${process.env.REACT_APP_API_URL}/user/verifyCurrentPassword/${user._id}?currentPassword=${passwordToVerify}`, {
             headers:{
               'authorization': `Bearer ${accessToken}`
             },
@@ -152,14 +152,14 @@ const UserUpdate = () => {
         if(error.response && error.response.status === 403 && error.response.data.message === "Access token expired"){
             try {
                 let user = JSON.parse(localStorage.getItem('user'))
-                let response = await axios.post('http://localhost:8080/api/user/refreshAccessToken', {user}, {withCredentials:true})
+                let response = await axios.post(`${process.env.REACT_APP_API_URL}/user/refreshAccessToken`, {user}, {withCredentials:true})
                 // console.log(response);
                 console.log(response.data.error);
                 if(!response.data.error){
                   let accessToken = response.data.newAccessToken
                   localStorage.setItem('accessToken', JSON.stringify(accessToken))
                 
-                  let {data} = await axios.get(`http://localhost:8080/api/user/verifyCurrentPassword/${user._id}?currentPassword=${passwordToVerify}`, {
+                  let {data} = await axios.get(`${process.env.REACT_APP_API_URL}/user/verifyCurrentPassword/${user._id}?currentPassword=${passwordToVerify}`, {
                     headers:{
                       'authorization': `Bearer ${accessToken}`
                     },

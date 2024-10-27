@@ -47,7 +47,7 @@ const AdminNewsEditor = () => {
   // & fetching news detaisl to edit
   let fetchNewsDetails = async() => {
     try {
-      let response = await axios.get(`http://localhost:8080/api/news/fetchSingleNews/${id}`)
+      let response = await axios.get(`${process.env.REACT_APP_API_URL}/news/fetchSingleNews/${id}`)
       // console.log(response);
       // console.log(response.data.singleNews);
       setNewsData(response.data.singleNews)

@@ -36,7 +36,7 @@ const AllNews = () => {
     let fetchAllNews = async() => {
         try {
             let currentPageNumberInLocal = localStorage.getItem('currentPageNumberOfAllNews')
-            let {data} = await axios.get(`http://localhost:8080/api/news/allNews?currentPageNumber=${currentPageNumberInLocal}&newsPerPage=${newsPerPage}`)
+            let {data} = await axios.get(`${process.env.REACT_APP_API_URL}/news/allNews?currentPageNumber=${currentPageNumberInLocal}&newsPerPage=${newsPerPage}`)
             console.log(data?.allNews);
             let allNewsArray = data?.allNews
             setAllNews(allNewsArray)
@@ -115,7 +115,7 @@ const AllNews = () => {
     // & checking for any breaking news to conditionally render the breaking news component
     let fetchBreakingNews = async() => {
         try {
-            let {data} = await axios.get('http://localhost:8080/api/news/fetchBreakingNewses')
+            let {data} = await axios.get(`${process.env.REACT_APP_API_URL}/news/fetchBreakingNewses`)
             console.log(data.breakingNewses);
             setBreakingNews(data.breakingNewses)
         } catch (error) {
@@ -157,20 +157,6 @@ const AllNews = () => {
     useEffect(() => {
         localStorage.setItem('currentPageNumberOfAllNews', 1)
     }, [pathname])
-
-    // useEffect(() => {
-    //     const handleScroll = () => {
-    //         setScrollY(window.scrollY); // Update scroll position
-    //     };
-
-    //     window.addEventListener('scroll', handleScroll);
-    //     return () => window.removeEventListener('scroll', handleScroll);
-    // }, [])
-
-    // useEffect(() => {
-    //     // console.log(currentPageNumber);
-    //     console.log(breakingNews);
-    // })
 
     if(loading){
         return(

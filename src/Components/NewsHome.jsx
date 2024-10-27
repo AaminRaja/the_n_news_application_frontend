@@ -33,7 +33,7 @@ const NewsHome = () => {
         numberOfNews = 4
       }
 
-      let response = await axios.get(`http://localhost:8080/api/news/${specification}?numberOfNews=${numberOfNews}`, {
+      let response = await axios.get(`${process.env.REACT_APP_API_URL}/news/${specification}?numberOfNews=${numberOfNews}`, {
           headers:{
             'authorization': `Bearer ${accessToken}`
           },
@@ -54,7 +54,7 @@ const NewsHome = () => {
       if(error.response && error.response.status === 403 && error.response.data.message === "Access token expired"){
         try {
           let user = JSON.parse(localStorage.getItem('user'))
-          let response = await axios.post('http://localhost:8080/api/user/refreshAccessToken', {user}, {withCredentials:true})
+          let response = await axios.post(`${process.env.REACT_APP_API_URL}/user/refreshAccessToken`, {user}, {withCredentials:true})
           console.log(response);
           console.log(response.data.error);
           if(!response.data.error){
@@ -72,7 +72,7 @@ const NewsHome = () => {
               numberOfNews = 4
             }
 
-            let {data} = await axios.get(`http://localhost:8080/api/news/${specification}?numberOfNews=${numberOfNews}`, {
+            let {data} = await axios.get(`${process.env.REACT_APP_API_URL}/news/${specification}?numberOfNews=${numberOfNews}`, {
               headers:{
                 'authorization': `Bearer ${accessToken}`
               },
@@ -104,7 +104,7 @@ const NewsHome = () => {
 
   let fetchLatestNews = async() => {
     try {
-      let response = await axios.get(`http://localhost:8080/api/news/allNews?numberOfNews=10`)
+      let response = await axios.get(`${process.env.REACT_APP_API_URL}/news/allNews?numberOfNews=10`)
       // console.log(response);
       setLatestNews(response.data.allNews)
     } catch (error) {

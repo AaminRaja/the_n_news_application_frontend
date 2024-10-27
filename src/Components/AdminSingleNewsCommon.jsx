@@ -29,7 +29,7 @@ const AdminSingleNewsCommon = () => {
 
     let fetchSingleNewsdetails = async() => {
         try {
-            let singleResponse = await axios.get(`http://localhost:8080/api/news/fetchSingleNews/${id}`)
+            let singleResponse = await axios.get(`${process.env.REACT_APP_API_URL}/news/fetchSingleNews/${id}`)
             let singleNews = singleResponse.data.singleNews
             let formattedDate = format(singleNews.PublishedDateAndTime, 'MMMM dd, yyyy')
             singleNews.PublishedDateAndTime = formattedDate
@@ -38,7 +38,7 @@ const AdminSingleNewsCommon = () => {
 
             // !
             let Category = singleNews.Category
-            let categoryResponse = await axios.get(`http://localhost:8080/api/news/filterByCategory?category=${Category}&numberOfNews=10`)
+            let categoryResponse = await axios.get(`${process.env.REACT_APP_API_URL}/news/filterByCategory?category=${Category}&numberOfNews=10`)
             let filteredArrayBycategory = categoryResponse.data.filteredNewsByCategory;
             filteredArrayBycategory = filteredArrayBycategory.filter((ele) => {
               return ele._id !== id
@@ -102,7 +102,7 @@ const AdminSingleNewsCommon = () => {
             let accessToken = JSON.parse(localStorage.getItem('accessToken'))
             console.log(accessToken);
 
-            let response = await axios.put(`http://localhost:8080/api/news/softDeleteOneNews/${id}`, {deleteOrNot : !newsDetails?.isDeleted}, {
+            let response = await axios.put(`${process.env.REACT_APP_API_URL}/news/softDeleteOneNews/${id}`, {deleteOrNot : !newsDetails?.isDeleted}, {
               headers:{
                 'authorization': `Bearer ${accessToken}`
               },
@@ -119,7 +119,7 @@ const AdminSingleNewsCommon = () => {
             if(error.response && error.response.status === 403 && error.response.data.message === "Access token expired"){
                 try {
                   let user = JSON.parse(localStorage.getItem('user'))
-                  let response = await axios.post('http://localhost:8080/api/user/refreshAccessToken', {user}, {withCredentials:true})
+                  let response = await axios.post(`${process.env.REACT_APP_API_URL}/user/refreshAccessToken`, {user}, {withCredentials:true})
                   console.log(response);
                   console.log(response.data.error);
                   if(!response.data.error){
@@ -128,7 +128,7 @@ const AdminSingleNewsCommon = () => {
                     localStorage.setItem('accessToken', JSON.stringify(accessToken))
                     console.log(JSON.parse(localStorage.getItem('accessToken')));
         
-                    let {data} = await axios.put(`http://localhost:8080/api/news/softDeleteOneNews/${id}`, {
+                    let {data} = await axios.put(`${process.env.REACT_APP_API_URL}/news/softDeleteOneNews/${id}`, {
                       headers:{
                         'authorization': `Bearer ${accessToken}`
                       },

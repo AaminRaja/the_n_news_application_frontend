@@ -28,7 +28,7 @@ const SingleNewsCommon = () => {
 
     let fetchSingleNewsdetails = async() => {
         try {
-            let singleResponse = await axios.get(`http://localhost:8080/api/news/fetchSingleNews/${id}`)
+            let singleResponse = await axios.get(`${process.env.REACT_APP_API_URL}/news/fetchSingleNews/${id}`)
             let singleNews = singleResponse.data.singleNews
             let formattedDate = format(singleNews.PublishedDateAndTime, 'MMMM dd, yyyy')
             singleNews.PublishedDateAndTime = formattedDate
@@ -37,7 +37,7 @@ const SingleNewsCommon = () => {
 
             // !
             let Category = singleNews.Category
-            let categoryResponse = await axios.get(`http://localhost:8080/api/news/filterByCategory?category=${Category}&numberOfNews=10`)
+            let categoryResponse = await axios.get(`${process.env.REACT_APP_API_URL}/news/filterByCategory?category=${Category}&numberOfNews=10`)
             let filteredArrayBycategory = categoryResponse.data.filteredNewsByCategory;
             filteredArrayBycategory = filteredArrayBycategory.filter((ele) => {
               return ele._id !== id

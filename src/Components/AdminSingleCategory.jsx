@@ -29,7 +29,7 @@ const AdminSingleCategory = () => {
         // & All News
         if(category === "Allnews"){
             try {
-                let {data} = await axios.get(`http://localhost:8080/api/news/allNews?currentPageNumber=${currentPageNumber}&newsPerPage=${newsPerPage}`)
+                let {data} = await axios.get(`${process.env.REACT_APP_API_URL}/news/allNews?currentPageNumber=${currentPageNumber}&newsPerPage=${newsPerPage}`)
                 console.log(data?.allNews);
                 setNewsByCategory(data?.allNews)
                 setTotalNumberOfPages(data?.totalNumberOfPages)
@@ -45,7 +45,7 @@ const AdminSingleCategory = () => {
             let accessToken = JSON.parse(localStorage.getItem('accessToken'))
             // console.log(`accessToken in NewsHome : ${accessToken}`);
       
-            let response = await axios.get(`http://localhost:8080/api/news/fetchEditorPick?currentPageNumber=${currentPageNumber}&newsPerPage=${newsPerPage}`, {
+            let response = await axios.get(`${process.env.REACT_APP_API_URL}/news/fetchEditorPick?currentPageNumber=${currentPageNumber}&newsPerPage=${newsPerPage}`, {
                 headers:{
                   'authorization': `Bearer ${accessToken}`
                 },
@@ -61,7 +61,7 @@ const AdminSingleCategory = () => {
             if(error.response && error.response.status === 403 && error.response.data.message === "Access token expired"){
               try {
                 let user = JSON.parse(localStorage.getItem('user'))
-                let response = await axios.post('http://localhost:8080/api/user/refreshAccessToken', {user}, {withCredentials:true})
+                let response = await axios.post(`${process.env.REACT_APP_API_URL}/user/refreshAccessToken`, {user}, {withCredentials:true})
                 console.log(response);
                 console.log(response.data.error);
                 if(!response.data.error){
@@ -70,7 +70,7 @@ const AdminSingleCategory = () => {
                   localStorage.setItem('accessToken', JSON.stringify(accessToken))
                   console.log(JSON.parse(localStorage.getItem('accessToken')));
       
-                  let {data} = await axios.get(`http://localhost:8080/api/news/fetchEditorPick?currentPageNumber=${currentPageNumber}&newsPerPage=${newsPerPage}`, {
+                  let {data} = await axios.get(`${process.env.REACT_APP_API_URL}/news/fetchEditorPick?currentPageNumber=${currentPageNumber}&newsPerPage=${newsPerPage}`, {
                     headers:{
                       'authorization': `Bearer ${accessToken}`
                     },
@@ -99,7 +99,7 @@ const AdminSingleCategory = () => {
           try {
             let accessToken = JSON.parse(localStorage.getItem('accessToken'))
 
-            let response = await axios.get(`http://localhost:8080/api/news/fetchBreakingNewses?currentPageNumber=${currentPageNumber}&newsPerPage=${newsPerPage}`, {
+            let response = await axios.get(`${process.env.REACT_APP_API_URL}/news/fetchBreakingNewses?currentPageNumber=${currentPageNumber}&newsPerPage=${newsPerPage}`, {
               headers:{
                 'authorization': `Bearer ${accessToken}`
               },
@@ -119,7 +119,7 @@ const AdminSingleCategory = () => {
             let accessToken = JSON.parse(localStorage.getItem('accessToken'))
             console.log(accessToken);
 
-            let response = await axios.get(`http://localhost:8080/api/news/fetchTopTenNewses?currentPageNumber=${currentPageNumber}&newsPerPage=${newsPerPage}`, {
+            let response = await axios.get(`${process.env.REACT_APP_API_URL}/news/fetchTopTenNewses?currentPageNumber=${currentPageNumber}&newsPerPage=${newsPerPage}`, {
               headers:{
                 'authorization': `Bearer ${accessToken}`
               },
@@ -134,7 +134,7 @@ const AdminSingleCategory = () => {
             if(error.response && error.response.status === 403 && error.response.data.message === "Access token expired"){
               try {
                 let user = JSON.parse(localStorage.getItem('user'))
-                let response = await axios.post('http://localhost:8080/api/user/refreshAccessToken', {user}, {withCredentials:true})
+                let response = await axios.post(`${process.env.REACT_APP_API_URL}/user/refreshAccessToken`, {user}, {withCredentials:true})
                 console.log(response);
                 console.log(response.data.error);
                 if(!response.data.error){
@@ -143,7 +143,7 @@ const AdminSingleCategory = () => {
                   localStorage.setItem('accessToken', JSON.stringify(accessToken))
                   console.log(JSON.parse(localStorage.getItem('accessToken')));
       
-                  let {data} = await axios.get(`http://localhost:8080/api/news/fetchTopTenNewses?currentPageNumber=${currentPageNumber}&newsPerPage=${newsPerPage}`, {
+                  let {data} = await axios.get(`${process.env.REACT_APP_API_URL}/news/fetchTopTenNewses?currentPageNumber=${currentPageNumber}&newsPerPage=${newsPerPage}`, {
                     headers:{
                       'authorization': `Bearer ${accessToken}`
                     },
@@ -171,7 +171,7 @@ const AdminSingleCategory = () => {
           try {
             let accessToken = JSON.parse(localStorage.getItem('accessToken'))
 
-            let response = await axios.get(`http://localhost:8080/api/news/fetchDeletedNews?currentPageNumber=${currentPageNumber}&newsPerPage=${newsPerPage}`, {
+            let response = await axios.get(`${process.env.REACT_APP_API_URL}/news/fetchDeletedNews?currentPageNumber=${currentPageNumber}&newsPerPage=${newsPerPage}`, {
               headers:{
                 'authorization': `Bearer ${accessToken}`
               },
@@ -186,7 +186,7 @@ const AdminSingleCategory = () => {
             if(error.response && error.response.status === 403 && error.response.data.message === "Access token expired"){
               try {
                 let user = JSON.parse(localStorage.getItem('user'))
-                let response = await axios.post('http://localhost:8080/api/user/refreshAccessToken', {user}, {withCredentials:true})
+                let response = await axios.post(`${process.env.REACT_APP_API_URL}/user/refreshAccessToken`, {user}, {withCredentials:true})
                 console.log(response);
                 console.log(response.data.error);
                 if(!response.data.error){
@@ -195,7 +195,7 @@ const AdminSingleCategory = () => {
                   localStorage.setItem('accessToken', JSON.stringify(accessToken))
                   console.log(JSON.parse(localStorage.getItem('accessToken')));
       
-                  let {data} = await axios.get(`http://localhost:8080/api/news/fetchDeletedNews?currentPageNumber=${currentPageNumber}&newsPerPage=${newsPerPage}`, {
+                  let {data} = await axios.get(`${process.env.REACT_APP_API_URL}/news/fetchDeletedNews?currentPageNumber=${currentPageNumber}&newsPerPage=${newsPerPage}`, {
                     headers:{
                       'authorization': `Bearer ${accessToken}`
                     },
@@ -221,7 +221,7 @@ const AdminSingleCategory = () => {
         }else{
           // & categories
           try {
-            let response = await axios.get(`http://localhost:8080/api/news/filterByCategory?category=${category}&currentPageNumber=${currentPageNumber}&newsPerPage=${newsPerPage}`)
+            let response = await axios.get(`${process.env.REACT_APP_API_URL}/news/filterByCategory?category=${category}&currentPageNumber=${currentPageNumber}&newsPerPage=${newsPerPage}`)
             console.log(response);
             setNewsByCategory(response.data.filteredNewsByCategory)
             setTotalNumberOfPages(response.data.totalNumberOfPages)

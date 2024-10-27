@@ -72,8 +72,10 @@ const Login = () => {
             }else if(!formData.Password){
                 setPasswordAbsent(true)
             }else{
-                let response = await axios.post('http://localhost:8080/api/user/userLogin', formData , {withCredentials: true})
-                // console.log(response);
+                console.log(process.env.REACT_APP_API_URL);
+                // let response = await axios.post(`${process.env.REACT_APP_API_URL}/user/userLogin`, formData , {withCredentials: true})
+                let response = await axios.post(`${process.env.REACT_APP_API_URL}/user/userLogin`, formData )
+                console.log(response);
                 console.log(response?.data);
                 let userFromBackend = response.data.user
                 console.log(userFromBackend);
@@ -83,15 +85,16 @@ const Login = () => {
                 localStorage.setItem('accessToken', JSON.stringify(accessToken))
                 getUserFromLogin(userFromBackend)
                 setFormData({loginMode:mode, identifier:'', Password:''})
-                if(userFromBackend.Role === "Reader"){
+                if(userFromBackend?.Role === "Reader"){
                     navigateToNewses('/news/home')
-                }else{
+                }else if(userFromBackend?.Role === "Editor"){
                     navigateToNewses('/admin')
                 }
-                console.log(JSON.parse(localStorage.getItem('user')));
-                console.log(JSON.parse(localStorage.getItem('accessToken')));
+                // console.log(JSON.parse(localStorage.getItem('user')));
+                // console.log(JSON.parse(localStorage.getItem('accessToken')));
             }
         } catch (error) {
+            console.log(error);
             console.log(error.response);
             console.error(error.response?.status);
             let errorStatus = error.response?.status

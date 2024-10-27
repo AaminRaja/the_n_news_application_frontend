@@ -16,7 +16,7 @@ export const AppProvider = ({ children }) => {
   let getUserFromLogin = (userByLogin) => {
     // console.log(userByLogin);
     setUser(userByLogin);
-    if(userByLogin.Role === "Reader"){
+    if(userByLogin?.Role === "Reader"){
       fetchSavedNewsIds()
     }
     
@@ -44,7 +44,7 @@ export const AppProvider = ({ children }) => {
       let user = JSON.parse(localStorage.getItem('user'))
       // console.log(user);
 
-      let response = await axios.get(`http://localhost:8080/api/user/fetchSavedNewsIds?user_id=${user?._id}`, {
+      let response = await axios.get(`${process.env.REACT_APP_API_URL}/user/fetchSavedNewsIds?user_id=${user?._id}`, {
         headers:{
           'authorization': `Bearer ${accessToken}`
         },
@@ -59,14 +59,14 @@ export const AppProvider = ({ children }) => {
       if(error && error.response?.status === 403 && error.response.data.message === "Access token expired"){
         try {
           let user = JSON.parse(localStorage.getItem('user'))
-          let response = await axios.post('http://localhost:8080/api/user/refreshAccessToken', {user}, {withCredentials:true})
+          let response = await axios.post(`${process.env.REACT_APP_API_URL}/user/refreshAccessToken`, {user}, {withCredentials:true})
           console.log(response);
           if(!response.data.error){
             let accessToken = response.data.newAccessToken
             localStorage.setItem('newAccessToken', JSON.stringify(accessToken))
             console.log(JSON.parse(localStorage.getItem('accessToken')));
 
-            let {data} = await axios.get(`http://localhost:8080/api/user/fetchSavedNewsIds?user_id=${user._id}`, {
+            let {data} = await axios.get(`${process.env.REACT_APP_API_URL}/user/fetchSavedNewsIds?user_id=${user._id}`, {
               headers:{
                 'authorization': `Bearer ${accessToken}`
               },
@@ -98,7 +98,7 @@ export const AppProvider = ({ children }) => {
       // console.log(user);
       // console.log(user._id);
       let userId = user._id
-      let response = await axios.put(`http://localhost:8080/api/user/saveNews/${newsId}`, {userId}, {
+      let response = await axios.put(`${process.env.REACT_APP_API_URL}/user/saveNews/${newsId}`, {userId}, {
         headers:{
           'authorization': `Bearer ${accessToken}`
         },
@@ -109,7 +109,7 @@ export const AppProvider = ({ children }) => {
       if(error && error.response.status === 403 && error.response.data.message === "Access token expired"){
         try {
           let user = JSON.parse(localStorage.getItem('user'))
-          let response = await axios.post('http://localhost:8080/api/user/refreshAccessToken', {user}, {withCredentials:true})
+          let response = await axios.post(`${process.env.REACT_APP_API_URL}/user/refreshAccessToken`, {user}, {withCredentials:true})
           console.log(response);
           if(!response.data.error){
             let accessToken = response.data.newAccessToken
@@ -118,7 +118,7 @@ export const AppProvider = ({ children }) => {
 
             let user = JSON.parse(localStorage.getItem('user'))
             let userId = user._id
-            let {data} = await axios.put(`http://localhost:8080/api/user/saveNews/${newsId}`, {userId}, {
+            let {data} = await axios.put(`${process.env.REACT_APP_API_URL}/user/saveNews/${newsId}`, {userId}, {
               headers:{
                 'authorization': `Bearer ${accessToken}`
               },
@@ -146,7 +146,7 @@ export const AppProvider = ({ children }) => {
       // console.log(user);
       // console.log(user._id);
       let userId = user._id
-      let response = await axios.put(`http://localhost:8080/api/user/unSaveNews/${newsId}`, {userId}, {
+      let response = await axios.put(`${process.env.REACT_APP_API_URL}/user/unSaveNews/${newsId}`, {userId}, {
         headers:{
           'authorization': `Bearer ${accessToken}`
         },
@@ -157,7 +157,7 @@ export const AppProvider = ({ children }) => {
       if(error && error.response.status === 403 && error.response.data.message === "Access token expired"){
         try {
           let user = JSON.parse(localStorage.getItem('user'))
-          let response = await axios.post('http://localhost:8080/api/user/refreshAccessToken', {user}, {withCredentials:true})
+          let response = await axios.post(`${process.env.REACT_APP_API_URL}/user/refreshAccessToken`, {user}, {withCredentials:true})
           console.log(response);
           if(!response.data.error){
             let accessToken = response.data.newAccessToken
@@ -166,7 +166,7 @@ export const AppProvider = ({ children }) => {
 
             let user = JSON.parse(localStorage.getItem('user'))
             let userId = user._id
-            let {data} = await axios.put(`http://localhost:8080/api/user/unSaveNews/${newsId}`, {userId}, {
+            let {data} = await axios.put(`${process.env.REACT_APP_API_URL}/user/unSaveNews/${newsId}`, {userId}, {
               headers:{
                 'authorization': `Bearer ${accessToken}`
               },
@@ -211,17 +211,21 @@ export const AppProvider = ({ children }) => {
   }
 
   useEffect(() => {
-    let userInLocalStorage = JSON.parse(localStorage.getItem('user'))
+    let userInLocalStorage = localStorage.getItem('user')
+    // let userInLocalStorage = JSON.parse(localStorage.getItem('user'))
     let categoryFromLocalStorage = localStorage.getItem('currentCategory')
     // console.log(categoryFromLocalStorage);
     console.log(userInLocalStorage);
+    console.log(categoryFromLocalStorage);
 
-    setUser(userInLocalStorage)
-    if(userInLocalStorage && userInLocalStorage?.Role === "Reader"){
-      // setUser(userInLocalStorage)
+    if(userInLocalStorage === "undefined") {
+      navigateTo('/')
+    }else if(userInLocalStorage && userInLocalStorage?.Role === "Reader"){
+      setUser(userInLocalStorage)
       fetchSavedNewsIds()
       navigateTo('/news')
     }else if(userInLocalStorage && userInLocalStorage?.Role === "Editor"){
+      setUser(userInLocalStorage)
       navigateTo('/admin')
     }
 

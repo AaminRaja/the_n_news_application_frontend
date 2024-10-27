@@ -35,7 +35,7 @@ const Signup = () => {
                 let dataToRegister = {...data, Preferences:preferences}
                 console.log(dataToRegister);
     
-                let response = await axios.post('http://localhost:8080/api/user/userSignup', dataToRegister)
+                let response = await axios.post(`${process.env.REACT_APP_API_URL}/user/userSignup`, dataToRegister)
                 setPreferences([])
                 reset()
                 console.log(response);
