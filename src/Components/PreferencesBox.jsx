@@ -23,7 +23,7 @@ const PreferencesBox = () => {
       // console.log(currentPrefernce);
       // console.log(arrayNumber);
       try {
-        let {data} = await axios.get(`http://localhost:8080/api/news/filterByCategory?category=${currentPrefernce}&numberOfNews=5`)
+        let {data} = await axios.get(`${process.env.REACT_APP_API_URL}/news/filterByCategory?category=${currentPrefernce}&numberOfNews=5`)
         console.log(data);
         switch (arrayNumber) {
           case 1:

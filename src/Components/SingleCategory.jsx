@@ -12,6 +12,8 @@ const SingleCategory = () => {
   let[newsByCategory, setNewsByCategory] = useState([])
   let[currentPageNumber, setCurrentPageNumber] = useState()
   let[totalnumberOfpages, setTotalNumberOfPages] = useState(1)
+  let[categoryHeading, setCategoryHeading] = useState()
+  let[isLoading, setIsLoading] = useState(false)
 
   let {currentCategoryInApp, logoutFromTopNavbar, savedNewsIds, getCurrentCategory, updateSavedNewsIds} = useContext(AppContext)
 
@@ -21,15 +23,16 @@ const SingleCategory = () => {
 
   let category = currentCategoryInApp
 
-  let newsPerPage = 9
+  let newsPerPage = 12
   
   let fetchByCategory = async() => {
     // & editor's pick
     if(category === "editorspick"){
       try {
+        setIsLoading(true)
         let accessToken = JSON.parse(localStorage.getItem('accessToken'))
         // console.log(`accessToken in NewsHome : ${accessToken}`);
-  
+        
         let response = await axios.get(`${process.env.REACT_APP_API_URL}/news/fetchEditorPick?currentPageNumber=${currentPageNumber}&newsPerPage=${newsPerPage}`, {
             headers:{
               'authorization': `Bearer ${accessToken}`
@@ -40,11 +43,13 @@ const SingleCategory = () => {
         console.log(response);
         setNewsByCategory(response.data.editorPickNewses)
         setTotalNumberOfPages(response.data.totalNumberOfPages)
+        setIsLoading(false)
         
       } catch (error) {
         console.log(error);
         if(error.response && error.response.status === 403 && error.response.data.message === "Access token expired"){
           try {
+            setIsLoading(true)
             let user = JSON.parse(localStorage.getItem('user'))
             let response = await axios.post(`${process.env.REACT_APP_API_URL}/user/refreshAccessToken`, {user}, {withCredentials:true})
             console.log(response);
@@ -65,6 +70,7 @@ const SingleCategory = () => {
   
               setNewsByCategory(data.editorPickNewses)
               setTotalNumberOfPages(data.totalNumberOfPages)
+              setIsLoading(false)
             }
           } catch (error) {
             console.log(error);
@@ -83,6 +89,7 @@ const SingleCategory = () => {
       // let user = JSON.parse(localStorage.getItem('user'))
       // console.log(user._id);
       try {
+        setIsLoading(true)
         let accessToken = JSON.parse(localStorage.getItem('accessToken'))
         let user = JSON.parse(localStorage.getItem('user'))
         let response = await axios.get(`${process.env.REACT_APP_API_URL}/user/fetchSavedNews?user_id=${user._id}&currentPageNumber=${currentPageNumber}&newsPerPage=${newsPerPage}`, {
@@ -90,15 +97,17 @@ const SingleCategory = () => {
             'authorization': `Bearer ${accessToken}`
           },
           withCredentials:true})
-          console.log(response);
+        console.log(response);
         console.log(response.data.savedNewsArray);
         setNewsByCategory(response.data.savedNewsArray)
         setTotalNumberOfPages(response.data.totalNumberOfPages)
+        setIsLoading(false)
         // setSavedNewsIds(response.data.savedNewsArray)
       } catch (error) {
         console.log(error);
         if(error.response && error.response.status === 403 && error.response.data.message === "Access token expired"){
           try {
+            setIsLoading(true)
             let user = JSON.parse(localStorage.getItem('user'))
             let response = await axios.post(`${process.env.REACT_APP_API_URL}/user/refreshAccessToken`, {user}, {withCredentials:true})
             console.log(response);
@@ -116,6 +125,7 @@ const SingleCategory = () => {
               console.log(data);
               setNewsByCategory(data.savedNewsArray)
               setTotalNumberOfPages(data.totalNumberOfPages)
+              setIsLoading(false)
             }
             
           } catch (error) {
@@ -126,10 +136,12 @@ const SingleCategory = () => {
     }else{
       // & categories
       try {
+        setIsLoading(true)
         let response = await axios.get(`${process.env.REACT_APP_API_URL}/news/filterByCategory?category=${category}&currentPageNumber=${currentPageNumber}&newsPerPage=${newsPerPage}`)
         console.log(response);
         setNewsByCategory(response.data.filteredNewsByCategory)
         setTotalNumberOfPages(response.data.totalNumberOfPages)
+        setIsLoading(false)
       } catch (error) {
         console.log(error);
       }
@@ -209,7 +221,19 @@ const SingleCategory = () => {
   }, [pathname])
 
   useEffect(() => {
+    // setIsLoading(true)
     fetchByCategory()
+    // setIsLoading(false)
+    switch(category){
+      case "editorspick":
+        setCategoryHeading("Editor's Pick")
+        break
+      case "savednews":
+        setCategoryHeading("Saved News")
+        break
+      default:
+        setCategoryHeading(category)
+    }
     window.scrollTo(0, 0);
   }, [currentCategoryInApp, currentPageNumber])
 
@@ -220,10 +244,25 @@ const SingleCategory = () => {
   useEffect(() => {
     console.log(newsByCategory)
     console.log(savedNewsIds);
+    console.log(category);
+    console.log(currentCategoryInApp);
   })
+
+  if(isLoading){
+    return(
+      <div className={singleCategoryStyle.gifContainer}>
+        <div className={singleCategoryStyle.gifDiv} >
+          <img src="https://i.pinimg.com/originals/b2/d4/b2/b2d4b2c0f0ff6c95b0d6021a430beda4.gif" alt="Saving..." className={singleCategoryStyle.gif} />
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className={singleCategoryStyle.singleCategoryContainer}>
+      <div className={singleCategoryStyle.pageHeadingContainer}>
+        <h1 className={singleCategoryStyle.pageHeading}>{categoryHeading}</h1>
+      </div>
       <div className={singleCategoryStyle.newsListContainer}>
             {newsByCategory?.map((news) => {
                 return(

@@ -1,10 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import adminHomeStyle from './AdminHome.module.css'
 import { useNavigate } from 'react-router-dom'
 import AdminNewsPreview from './AdminNewsPreview'
 import { IoMdArrowDropdown } from "react-icons/io";
 import { LuPlus } from "react-icons/lu";
 import { id } from 'date-fns/locale';
+import { AppContext } from './AppProvider';
 
 const AdminHome = () => {
   let[newsData, setNewsData] = useState()
@@ -24,6 +25,8 @@ const AdminHome = () => {
   let[subEditorError, setSubEditorError] = useState(false)
   let[imageError, setImageError] = useState(false)
   let[contentError, setContentError] = useState(false)
+
+  let {getCurrentCategory} = useContext(AppContext)
 
   let dropRefCategory = useRef(null)
   let dropRefStatus = useRef(null)
@@ -152,6 +155,8 @@ const AdminHome = () => {
   }
 
   useEffect(() => {
+    window.scrollTo(0, 0)
+    getCurrentCategory("Home")
     // & Hiding the user drop
 
     document.addEventListener('mousedown', handleClickOutsidedrop)
@@ -159,7 +164,7 @@ const AdminHome = () => {
     return () => {
         document.removeEventListener('mousedown', handleClickOutsidedrop)
     }
-  })
+  }, [])
 
   // & conditional checking before going to the preview page
   useEffect(() => {
@@ -172,9 +177,6 @@ const AdminHome = () => {
     }
   }, [newsData])
 
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
   
   useEffect(() => {
     console.log(newsContent);

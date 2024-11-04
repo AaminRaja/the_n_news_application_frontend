@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import AdminNewsPreviewStyle from './AdminNewsPreview.module.css'
 import { IoBackspaceOutline } from "react-icons/io5";
 import { FaRegThumbsUp } from "react-icons/fa";
@@ -7,17 +7,19 @@ import { AppContext } from './AppProvider';
 import { useNavigate } from 'react-router-dom';
 
 const AdminNewsPreview = ({newsData, getPreviewPageShow, refreshNewsDatas, purpose, id}) => {
+  let[saving, setSaving] = useState(false)
 
   let {logoutFromTopNavbar} = useContext(AppContext)
 
   let navigateTo = useNavigate()
 
   let saveNews = async() => {
+    setSaving(true)
     try {
       let accessToken = JSON.parse(localStorage.getItem('accessToken'))
       // & AaddNews
       if(purpose === "AddNews"){
-        let response = await axios.post(`http://localhost:8080/api/news/addNews`, newsData, {
+        let response = await axios.post(`${process.env.REACT_APP_API_URL}/news/addNews`, newsData, {
           headers:{
             'authorization': `Bearer ${accessToken}`
           },
@@ -26,14 +28,15 @@ const AdminNewsPreview = ({newsData, getPreviewPageShow, refreshNewsDatas, purpo
   
         console.log(response);
         if(!response.data.error){
+          setSaving(false)
           refreshNewsDatas()
           getPreviewPageShow()
-          navigateTo(-1)
+          // navigateTo(-1)
         }
       // & EditNews
       }else if(purpose === "EditNews"){
         console.log(newsData);
-        let response = await axios.put(`http://localhost:8080/api/news/editNews/${id}`, newsData, {
+        let response = await axios.put(`${process.env.REACT_APP_API_URL}/news/editNews/${id}`, newsData, {
           headers:{
             'authorization': `Bearer ${accessToken}`
           },
@@ -42,9 +45,10 @@ const AdminNewsPreview = ({newsData, getPreviewPageShow, refreshNewsDatas, purpo
 
         console.log(response);
         if(!response.data.error){
+          setSaving(false)
           refreshNewsDatas()
           getPreviewPageShow()
-          navigateTo(-2)
+          navigateTo(-1)
         }
       }
 
@@ -53,7 +57,7 @@ const AdminNewsPreview = ({newsData, getPreviewPageShow, refreshNewsDatas, purpo
       if(error.response && error.response.status === 403 && error.response.data.message === "Access token expired"){
         try {
           let user = JSON.parse(localStorage.getItem('user'))
-          let response = await axios.post('http://localhost:8080/api/user/refreshAccessToken', {user}, {withCredentials:true})
+          let response = await axios.post(`${process.env.REACT_APP_API_URL}/user/refreshAccessToken`, {user}, {withCredentials:true})
           console.log(response);
           console.log(response.data.error);
           if(!response.data.error){
@@ -64,7 +68,7 @@ const AdminNewsPreview = ({newsData, getPreviewPageShow, refreshNewsDatas, purpo
 
             // & AaddNews
             if(purpose === "AddNews"){
-              let {data} = await axios.post(`http://localhost:8080/api/news/addNews`, newsData, {
+              let {data} = await axios.post(`${process.env.REACT_APP_API_URL}/news/addNews`, newsData, {
                 headers:{
                   'authorization': `Bearer ${accessToken}`
                 },
@@ -73,13 +77,14 @@ const AdminNewsPreview = ({newsData, getPreviewPageShow, refreshNewsDatas, purpo
               console.log(data);
   
               if(!response.data.error){
+                setSaving(false)
                 refreshNewsDatas()
                 getPreviewPageShow()
-                navigateTo(-1)
+                // navigateTo(-1)
               }
             // & EditNews
             }else if(purpose === "EditNews"){
-              let {data} = await axios.put(`http://localhost:8080/api/news/editNews/${id}`, newsData, {
+              let {data} = await axios.put(`${process.env.REACT_APP_API_URL}/news/editNews/${id}`, newsData, {
                 headers:{
                   'authorization': `Bearer ${accessToken}`
                 },
@@ -88,9 +93,10 @@ const AdminNewsPreview = ({newsData, getPreviewPageShow, refreshNewsDatas, purpo
               console.log(data);
   
               if(!response.data.error){
+                setSaving(false)
                 refreshNewsDatas()
                 getPreviewPageShow()
-                navigateTo(-2)
+                navigateTo(-1)
               }
             }
 
@@ -110,12 +116,23 @@ const AdminNewsPreview = ({newsData, getPreviewPageShow, refreshNewsDatas, purpo
   }
 
   useEffect(() => {
-  console.log(newsData);
+    console.log(newsData);
   }, [newsData])
 
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
+
+  if(saving){
+    return(
+      <div className={AdminNewsPreviewStyle.gifContainer}>
+        <div className={AdminNewsPreviewStyle.gifDiv} >
+          <img src="https://data.textstudio.com/output/sample/animated/1/7/0/6/saving-27-16071.gif" alt="Saving..." className={AdminNewsPreviewStyle.gif} />
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className={AdminNewsPreviewStyle.previewContainer}>
       <div className={AdminNewsPreviewStyle.singleNewscontainer}>

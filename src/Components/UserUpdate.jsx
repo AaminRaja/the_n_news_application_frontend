@@ -10,13 +10,15 @@ import { AppContext } from './AppProvider';
 const UserUpdate = () => {
   let[userVerified, setUserVerified] = useState(false)
   let[preferences, setPreferences] = useState([])
-  let[isPassword, setIsPassword] = useState(true)
+//   let[isPassword, setIsPassword] = useState(true)
 //   let[isConfirmPassword, setIsConfirmPassword] = useState(true)
 //   let[isPasswordsMatched, setIsPasswordsMatched] = useState(true)
   let[passwordToVerify, setPasswordToVerify] = useState()
   let[currentPasswordError, setCurrentPasswordError] = useState(false)
   let[verifyPassVisible, setVerifyPassVisible] = useState(true)
   let[duplicateUserName, setDuplicateUserNameError] = useState(false)
+  let[readerOrEditor, setReaderOrEditor] = useState(false)
+  let[isLoading, setIsLoading] = useState(false)
 
   let { user, logoutFromTopNavbar, getUserFromLogin} = useContext(AppContext)
 
@@ -34,6 +36,8 @@ const UserUpdate = () => {
         //   }else{
             //   setIsPasswordsMatched(true)
             //   formData.ConfirmPassword = undefined
+
+              setIsLoading(true)
               console.log(formData);
               let dataToRegister = {...formData, Preferences:preferences, _id:user._id}
               console.log(dataToRegister);
@@ -57,11 +61,13 @@ const UserUpdate = () => {
                     navigateTo('/admin')
                 }
               }
+              setIsLoading(false)
           
       } catch (error) {
           console.log(error);
           if(error.response && error.response.status === 403 && error.response.data.message === "Access token expired"){
             try {
+                setIsLoading(true)
                 let user = JSON.parse(localStorage.getItem('user'))
                 let response = await axios.post(`${process.env.REACT_APP_API_URL}/user/refreshAccessToken`, {user}, {withCredentials:true})
                 console.log(response.data.error);
@@ -91,6 +97,7 @@ const UserUpdate = () => {
                     }
                   }
                 }
+                setIsLoading(false)
             } catch (error) {
                 console.log(error);
                 if(error.response && error.response.status === 403 && error.response.data.message === "Refresh token expired"){
@@ -135,6 +142,7 @@ const UserUpdate = () => {
 
   let submitCurrentPassword = async() => {
     try {
+        setIsLoading(true)
         let accessToken = JSON.parse(localStorage.getItem('accessToken'))
         let {data} = await axios.get(`${process.env.REACT_APP_API_URL}/user/verifyCurrentPassword/${user._id}?currentPassword=${passwordToVerify}`, {
             headers:{
@@ -147,10 +155,12 @@ const UserUpdate = () => {
             setPasswordToVerify('')
             setUserVerified(true)
         }
+        setIsLoading(false)
     } catch (error) {
         console.log(error);
         if(error.response && error.response.status === 403 && error.response.data.message === "Access token expired"){
             try {
+                setIsLoading(true)
                 let user = JSON.parse(localStorage.getItem('user'))
                 let response = await axios.post(`${process.env.REACT_APP_API_URL}/user/refreshAccessToken`, {user}, {withCredentials:true})
                 // console.log(response);
@@ -173,6 +183,7 @@ const UserUpdate = () => {
                         setUserVerified(true)
                     }
                 }
+                setIsLoading(false)
             } catch (error) {
                 console.log(error);
                 if(error.response && error.response.status === 403 && error.response.data.message === "Refresh token expired"){
@@ -194,6 +205,11 @@ const UserUpdate = () => {
     setValue("Username", user?.Username)
     setPreferences(user?.Preferences)
     window.scrollTo(0, 0);
+    if(user?.Username === "Editor"){
+        setReaderOrEditor(true)
+    }else if(user?.Username === "Reader"){
+        setReaderOrEditor(false)
+    }
   }, [user, setValue])
 
   useEffect(() => {
@@ -203,6 +219,16 @@ const UserUpdate = () => {
     console.log(passwordToVerify);
     console.log(currentPasswordError);
   })
+
+  if(isLoading){
+    return(
+      <div className={userUpdateStyle.gifContainer}>
+        <div className={userUpdateStyle.gifDiv} >
+          <img src="https://i.pinimg.com/originals/b2/d4/b2/b2d4b2c0f0ff6c95b0d6021a430beda4.gif" alt="Saving..." className={userUpdateStyle.gif} />
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className={userUpdateStyle.container}>
@@ -279,7 +305,7 @@ const UserUpdate = () => {
                             
                         </div> */}
 
-                        <div className={userUpdateStyle.leftbuttonDiv}>
+                        {!readerOrEditor && <div className={userUpdateStyle.leftbuttonDiv}>
                             <div className={userUpdateStyle.preferenceHeader}>
                                 <h4>Select Preferences</h4>
                             </div>
@@ -288,7 +314,7 @@ const UserUpdate = () => {
                                     <button type='button' key={index} onClick={() => togglePreference(preference)} className={`${userUpdateStyle.preferenceBtn} ${preferences.includes(preference) ? userUpdateStyle.btnClicked : ''}`} >{preference}</button>
                                 ))}
                             </div>
-                        </div>
+                        </div>}
                     </div>
                     {/* <div className={userUpdateStyle.rightInputsContainer}>
                         <div className={userUpdateStyle.inputContainer}>

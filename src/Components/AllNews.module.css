@@ -1,10 +1,26 @@
-.spinnerContainer{
+/* !!! */
+
+.gifContainer{
+    /* border: 1px solid red; */
+    width: 100%;
+    padding-top: 100px;
     display: flex;
-    align-items: center;
+    align-items: start;
     justify-content: center;
-    height: 700px;
-    background-color: #F2EEE3;
+    min-height: 800px;
+    background-color: #F8F8F8;
 }
+
+.gifDiv{
+    /* border: 1px solid red; */
+    width: 20%;
+}
+
+.gif{
+    width: 100%;
+}
+
+/* !!! */
 
 .TotalContainer{
     /* border: 2px solid red; */

@@ -1,10 +1,25 @@
-/* .spinnerContainer{
+/* !!! */
+
+.gifContainer{
+    border: 1px solid red;
+    width: 100%;
     display: flex;
-    align-items: center;
+    align-items: start;
     justify-content: center;
-    height: 700px;
-    background-color: #F2EEE3;
-} */
+    min-height: 800px;
+    background-color: #F8F8F8;
+}
+
+.gifDiv{
+    /* border: 1px solid red; */
+    width: 20%;
+}
+
+.gif{
+    width: 100%;
+}
+
+/* !!! */
 
 .singleCategoryContainer{
     /* border: 2px solid red; */
@@ -21,6 +36,22 @@
     align-items: center;
     justify-content: space-around;
     /* perspective: 10px; */
+}
+
+/* !!!!!!!!!!! */
+
+.pageHeadingContainer{
+    /* border: 1px solid red; */
+    width: 100%;
+    padding: 20px 50px 0px 50px;
+}
+
+.pageHeading{
+    font-size: 170%;
+    color: brown;
+    font-weight: bold;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    letter-spacing: 1px;
 }
 
 /* !!!!!!!!!!!!! */
@@ -41,20 +72,14 @@
 
 /* !!!!!!!!!!!!! */
 
-.BreakingNewsContainer{
-    position: fixed;
-    top: 60px;
-    width: 100%;
-}
-
 .newsListContainer{
-    /* border: 2px solid red; */
+    /* border: 1px solid red; */
     width: 100%;
     display: flex;
     flex-wrap: wrap;
     align-items: top;
     justify-content: space-around;
-    margin: 20px 10px;
+    margin: 0px 10px;
 }
 
 .newsContainer{

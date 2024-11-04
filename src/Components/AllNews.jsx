@@ -12,35 +12,27 @@ const AllNews = () => {
     let[allNews, setAllNews] = useState([])
     let[currentPageNumber, setCurrentPageNumber] = useState()
     let[totalnumberOfpages, setTotalNumberOfPages] = useState(1)
-    let[loading, setLoading] = useState(false)
+    let[isLoading, setIsLoading] = useState(false)
     let[breakingNews, setBreakingNews] = useState()
     let[topDecision, setTopDecision] = useState(false)
-    // const [scrollY, setScrollY] = useState(0); // State for scroll position
 
     let {pathname} = useLocation()
 
     let navigateToSingleNews = useNavigate()
 
-    // const breakingNewsRef = useRef(null);
-
     // & Fetching all news
-    let newsPerPage = 9
-    
-    // let indexOfLastItem = currentPageNumber * itemsPerPage
-    // let indexOfFirstitem = indexOfLastItem - itemsPerPage
-
-    // let currentItems = allNews.slice(indexOfFirstitem, indexOfLastItem) //!
-
-    // let totalPages = Math.ceil(allNews.length/itemsPerPage)
+    let newsPerPage = 12
 
     let fetchAllNews = async() => {
         try {
+            setIsLoading(true)
             let currentPageNumberInLocal = localStorage.getItem('currentPageNumberOfAllNews')
             let {data} = await axios.get(`${process.env.REACT_APP_API_URL}/news/allNews?currentPageNumber=${currentPageNumberInLocal}&newsPerPage=${newsPerPage}`)
             console.log(data?.allNews);
             let allNewsArray = data?.allNews
             setAllNews(allNewsArray)
             setTotalNumberOfPages(data.totalNumberOfPages)
+            setIsLoading(false)
         } catch (error) {
             console.log(error);
         }
@@ -123,10 +115,6 @@ const AllNews = () => {
         }
     }
 
-    // useEffect(() => {
-    //     window.scrollTo(0, 0);
-    // }, [])
-
     useEffect(() => {
         let currentPageNumberInLocal = Number(localStorage.getItem('currentPageNumberOfAllNews'))
         console.log(Number(currentPageNumberInLocal));
@@ -145,10 +133,8 @@ const AllNews = () => {
     }, [])
 
     useEffect(() => {
-        setLoading(true)
         fetchAllNews()
         fetchBreakingNews()
-        setLoading(false)
         console.log(typeof currentPageNumber);
         console.log(localStorage.getItem('currentPageNumberOfAllNews'));
         window.scrollTo(0, 0);
@@ -158,12 +144,14 @@ const AllNews = () => {
         localStorage.setItem('currentPageNumberOfAllNews', 1)
     }, [pathname])
 
-    if(loading){
-        return(
-            <div className={allNewsStyle.spinnerContainer}>
-              <ClipLoader color="#3498db" loading={loading} size={100} />
-            </div>
-        )
+    if(isLoading){
+      return(
+        <div className={allNewsStyle.gifContainer}>
+          <div className={allNewsStyle.gifDiv} >
+            <img src="https://i.pinimg.com/originals/b2/d4/b2/b2d4b2c0f0ff6c95b0d6021a430beda4.gif" alt="Saving..." className={allNewsStyle.gif} />
+          </div>
+        </div>
+      )
     }
 
   return (
@@ -209,7 +197,6 @@ const AllNews = () => {
               <div className={allNewsStyle.numberBtnContainer}>
                   {totalnumberOfpages <= 10 ?
                       [...Array(totalnumberOfpages)].map((_, index) => {
-                        // console.log(index);
                           return(
                               <button className={`${allNewsStyle.numberbtn} ${currentPageNumber === index+1 ? allNewsStyle.activeBtn : ''}`} onClick={() => handlePageSelect(index+1)}>{index+1}</button>
                           )

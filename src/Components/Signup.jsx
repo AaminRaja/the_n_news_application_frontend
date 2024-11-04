@@ -15,6 +15,7 @@ const Signup = () => {
     let[duplicateUserName, setDuplicateUserNameError] = useState(false)
     let[duplicateEmail, setDuplicateEmail] = useState(false)
     let[duplicatePhoneNumber, setDuplicatePhoneNumber] = useState(false)
+    let[isLoading, setIsLoading] = useState(false)
 
     let {sendNavState} = useContext(AppContext)
 
@@ -34,15 +35,17 @@ const Signup = () => {
                 console.log(data);
                 let dataToRegister = {...data, Preferences:preferences}
                 console.log(dataToRegister);
-    
+                
+                setIsLoading(true)
                 let response = await axios.post(`${process.env.REACT_APP_API_URL}/user/userSignup`, dataToRegister)
                 setPreferences([])
                 reset()
                 console.log(response);
                 if(!response.data.error){
-                    toLogin('/login')
                     sendNavState('signup')
+                    toLogin('/login')
                 }
+                setIsLoading(false)
             }
             
         } catch (error) {
@@ -78,6 +81,16 @@ const Signup = () => {
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [])
+
+    if(isLoading){
+        return(
+          <div className={signupStyle.gifContainer}>
+            <div className={signupStyle.gifDiv} >
+              <img src="https://i.pinimg.com/originals/b2/d4/b2/b2d4b2c0f0ff6c95b0d6021a430beda4.gif" alt="Saving..." className={signupStyle.gif} />
+            </div>
+          </div>
+        )
+    }
 
   return (
     <div className={signupStyle.container}>

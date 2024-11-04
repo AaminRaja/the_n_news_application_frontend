@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export const AppContext = createContext();
 
@@ -10,8 +10,11 @@ export const AppProvider = ({ children }) => {
   let[currentCategoryInApp, setCurrentCategoryInApp] = useState()
   let[savedNewsIds, setSavedNewsIds] = useState([])
   let[isBlurred, setIsBlurred] = useState(false)
+  let[prevPath, setPrevPath]= useState()
 
   let navigateTo = useNavigate()
+
+  let {pathname} = useLocation()
 
   let getUserFromLogin = (userByLogin) => {
     // console.log(userByLogin);
@@ -28,19 +31,19 @@ export const AppProvider = ({ children }) => {
   };
 
   let sendNavState = (data) => {
+    // console.log(data);
     setNavStateInApp(data);
+    localStorage.setItem("currentState", data)
   };
 
   let getCurrentCategory = (category) => {
     // console.log(`Category from bottom nav bar : ${category}`);
-    console.log("from top  nav bar");
     setCurrentCategoryInApp(category)
   }
 
   let fetchSavedNewsIds = async() => {
     try {
       let accessToken = JSON.parse(localStorage.getItem('accessToken'))
-      // console.log(`Access token when fetching saved news ids : ${accessToken}`);
       let user = JSON.parse(localStorage.getItem('user'))
       // console.log(user);
 
@@ -84,6 +87,7 @@ export const AppProvider = ({ children }) => {
             localStorage.clear('accessToken')
             localStorage.clear('currentCategory')
             setUser(null);
+            console.log("navigating from here");
             navigateTo('/login')
           }
         }
@@ -132,6 +136,7 @@ export const AppProvider = ({ children }) => {
             localStorage.clear('accessToken')
             localStorage.clear('currentCategory')
             setUser(null);
+            console.log("navigating from here");
             navigateTo('/login')
           }
         }
@@ -180,6 +185,7 @@ export const AppProvider = ({ children }) => {
             localStorage.clear('accessToken')
             localStorage.clear('currentCategory')
             setUser(null);
+            console.log("navigating from here");
             navigateTo('/login')
           }
         }
@@ -211,39 +217,68 @@ export const AppProvider = ({ children }) => {
   }
 
   useEffect(() => {
-    let userInLocalStorage = localStorage.getItem('user')
-    // let userInLocalStorage = JSON.parse(localStorage.getItem('user'))
-    let categoryFromLocalStorage = localStorage.getItem('currentCategory')
-    // console.log(categoryFromLocalStorage);
-    console.log(userInLocalStorage);
-    console.log(categoryFromLocalStorage);
-
-    if(userInLocalStorage === "undefined") {
-      navigateTo('/')
-    }else if(userInLocalStorage && userInLocalStorage?.Role === "Reader"){
-      setUser(userInLocalStorage)
-      fetchSavedNewsIds()
-      navigateTo('/news')
-    }else if(userInLocalStorage && userInLocalStorage?.Role === "Editor"){
-      setUser(userInLocalStorage)
-      navigateTo('/admin')
-    }
-
-    if(categoryFromLocalStorage){
-      setCurrentCategoryInApp(categoryFromLocalStorage)
-      if(userInLocalStorage && userInLocalStorage?.Role === "Reader"){
-        navigateTo(`/news/${categoryFromLocalStorage.toLocaleLowerCase()}`)  
-      }else if(userInLocalStorage && userInLocalStorage?.Role === "Editor"){
-        navigateTo(`/admin/${categoryFromLocalStorage.toLocaleLowerCase()}`)
+    if(!prevPath){
+      setPrevPath('/')
+      // let userInLocalStorage = localStorage.getItem('user')
+      let userInLocalStorage = JSON.parse(localStorage.getItem('user'))
+      let categoryFromLocalStorage = localStorage.getItem('currentCategory')
+      // console.log(categoryFromLocalStorage);
+      console.log(userInLocalStorage);
+      console.log(categoryFromLocalStorage);
+      
+      if(userInLocalStorage === "undefined" || !userInLocalStorage){
+        navigateTo('/')
+      }else if(userInLocalStorage && categoryFromLocalStorage){
+        setCurrentCategoryInApp(categoryFromLocalStorage)
+        setUser(userInLocalStorage)
+        if(userInLocalStorage?.Role === "Reader"){
+          fetchSavedNewsIds()
+          navigateTo(`/news/${categoryFromLocalStorage.toLocaleLowerCase()}`)
+        }else if(userInLocalStorage?.Role === "Editor") {
+          navigateTo(`/admin/${categoryFromLocalStorage.toLocaleLowerCase()}`)
+        }
+      }else if(userInLocalStorage && !categoryFromLocalStorage){
+        setUser(userInLocalStorage)
+        setCurrentCategoryInApp("Home")
+        if(userInLocalStorage?.Role === "Reader"){
+          fetchSavedNewsIds()
+          navigateTo(`/news`)
+        }else if(userInLocalStorage?.Role === "Editor") {
+          navigateTo(`/admin`)
+        }
+      
       }
-    
+    }else{
+      if((prevPath === '/') || (prevPath === '/login') || (prevPath === '/signup')){
+        if((pathname.slice(1, 6) === "admin") || (pathname.slice(1, 5) === "news")){
+          if(!user){
+            setNavStateInApp('signup')
+            navigateTo('/login')
+          }else{
+            setPrevPath(pathname)
+          }
+        }else{
+          setPrevPath(pathname)
+        }
+      }else if((prevPath.slice(1, 6) === "admin") || (prevPath.slice(1, 5) === "news")){
+        if((pathname === '/') || (pathname === '/login') || (pathname === '/signup')){
+          if(user){
+            navigateTo(`${prevPath}`)
+          }else{
+            setPrevPath(pathname)
+          }
+        }else{
+          setPrevPath(pathname)
+        }
+      }else{
+        setPrevPath(pathname)
+      }
     }
+  }, [pathname])
 
-    // let userFromLocalStorage = JSON.parse(localStorage.getItem('user'))
-    // console.log(userFromLocalStorage);
-
-    // setUser(userFromLocalStorage)
-    // console.log(user);
+  useEffect(() => {
+    let stateInLocalStorage = localStorage.getItem('currentState')
+    console.log(stateInLocalStorage); 
   }, [])
 
   useEffect(() => {
@@ -262,6 +297,7 @@ export const AppProvider = ({ children }) => {
     console.log("savedNewsIds", savedNewsIds);
     console.log(user);
     console.log(isBlurred);
+    console.log(prevPath);
   })
 
   return (

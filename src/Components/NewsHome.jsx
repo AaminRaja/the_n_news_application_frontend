@@ -13,16 +13,16 @@ const NewsHome = () => {
   let[firstOfTopTen, setFirstOfTopTen] = useState()
   let[restOfTopTen, setRestOfTopTen] = useState([])
   let[latestNews, setLatestNews] = useState([])
+  let[isLoading, setIsLoading] = useState(false)
 
   let { logoutFromTopNavbar, savedNewsIds, updateSavedNewsIds, user, getCurrentCategory } = useContext(AppContext)
 
-  let navigateToLogin = useNavigate()
-  let navigateToSingleNews = useNavigate()
-  let navigateToAllNews = useNavigate()
+  let navigateTo = useNavigate()
 
   let fetchBySpecification = async(specification) => {
     console.log(specification);
     try {
+      setIsLoading(true)
       let accessToken = JSON.parse(localStorage.getItem('accessToken'))
       // console.log(`accessToken in NewsHome : ${accessToken}`);
 
@@ -48,11 +48,12 @@ const NewsHome = () => {
         setFirstOfTopTen(response.data.firstInTopTen)
         setRestOfTopTen(response.data.restInTopTen)
       }
-      
+      setIsLoading(false)
     } catch (error) {
       console.log(error);
       if(error.response && error.response.status === 403 && error.response.data.message === "Access token expired"){
         try {
+          setIsLoading(true)
           let user = JSON.parse(localStorage.getItem('user'))
           let response = await axios.post(`${process.env.REACT_APP_API_URL}/user/refreshAccessToken`, {user}, {withCredentials:true})
           console.log(response);
@@ -88,6 +89,7 @@ const NewsHome = () => {
               setRestOfTopTen(response.data.restInTopTen)
             }
           }
+          setIsLoading(false)
         } catch (error) {
           console.log(error);
           if(error.response && error.response.status === 403 && error.response.data.message === "Refresh token expired"){
@@ -95,7 +97,8 @@ const NewsHome = () => {
             localStorage.clear('accessToken')
             localStorage.clear('currentCategory')
             logoutFromTopNavbar()
-            navigateToLogin('/login')
+            console.log("navigating from here");
+            navigateTo('/login')
           }
         }
       }
@@ -104,9 +107,11 @@ const NewsHome = () => {
 
   let fetchLatestNews = async() => {
     try {
+      setIsLoading(true)
       let response = await axios.get(`${process.env.REACT_APP_API_URL}/news/allNews?numberOfNews=10`)
       // console.log(response);
       setLatestNews(response.data.allNews)
+      setIsLoading(false)
     } catch (error) {
       console.log(error);
     }
@@ -153,11 +158,11 @@ const NewsHome = () => {
   }
 
   let toSingleNews = (id) => {
-    navigateToSingleNews(`/news/${id}`)
+    navigateTo(`/news/${id}`)
   }
 
   let toAllNews = () => {
-    navigateToAllNews('allNews')
+    navigateTo('allNews')
   }
 
   useEffect(() => {
@@ -177,6 +182,16 @@ const NewsHome = () => {
     console.log(savedNewsIds);
     console.log(user);
   })
+
+  if(isLoading){
+    return(
+      <div className={newsHomeStyle.gifContainer}>
+        <div className={newsHomeStyle.gifDiv} >
+          <img src="https://i.pinimg.com/originals/b2/d4/b2/b2d4b2c0f0ff6c95b0d6021a430beda4.gif" alt="Saving..." className={newsHomeStyle.gif} />
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className={newsHomeStyle.totalContainer}>

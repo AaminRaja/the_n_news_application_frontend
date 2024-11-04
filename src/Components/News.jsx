@@ -16,27 +16,6 @@ const News = () => {
 
   let {pathname} = useLocation()
 
-  let toSingleNews = (id) => {
-    navigateToSingleNews(`/news/${id}`)
-  }
-
-  useEffect(() => {
-    console.log(user);
-    if(!user){
-      navigateToLogin('/login')
-      sendNavState('signup')
-    }else{
-      sendNavState('logout')
-    }
-  })
-
-  // useEffect(() => {
-  //   if(pathname === '/news/updateuser'){
-  //     setIsEditing(true)
-  //   }else{
-  //     setIsEditing(false)
-  //   }
-  // }, [pathname])
   return (
     <div className={newsStyle.container}>
 
@@ -45,7 +24,7 @@ const News = () => {
       </div>}
 
       {!isEditing && <div className={newsStyle.breakingNewsTickerDiv}>
-        <BreakingNewsTicker toSingleNews={toSingleNews} />
+        <BreakingNewsTicker />
       </div>}
       <section className={`${newsStyle.newsDiv} ${isEditing && newsStyle.newsDivEditing}`}>
         <Outlet/>

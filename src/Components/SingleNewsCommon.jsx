@@ -11,9 +11,9 @@ import { FaBookmark } from "react-icons/fa6";
 const SingleNewsCommon = () => {
     
     let[newsDetails, setNewsDetails] = useState()
-    let[loading, setLoading] = useState(false)
     let[filteredByCategory, setFilteredByCategory] = useState([])
     let[topDecision, setTopDecision] = useState(false)
+    let[isLoading, setIsLoading] = useState(false)
 
     let {id} = useParams()
 
@@ -28,6 +28,7 @@ const SingleNewsCommon = () => {
 
     let fetchSingleNewsdetails = async() => {
         try {
+            setIsLoading(true)
             let singleResponse = await axios.get(`${process.env.REACT_APP_API_URL}/news/fetchSingleNews/${id}`)
             let singleNews = singleResponse.data.singleNews
             let formattedDate = format(singleNews.PublishedDateAndTime, 'MMMM dd, yyyy')
@@ -46,6 +47,7 @@ const SingleNewsCommon = () => {
             filteredArrayBycategory = filteredArrayBycategory
             console.log(filteredArrayBycategory);
             setFilteredByCategory(filteredArrayBycategory)
+            setIsLoading(false)
         } catch (error) {
             console.log(error);
         }
@@ -110,9 +112,9 @@ const SingleNewsCommon = () => {
     }, [newsDetails, filteredByCategory])
 
    useEffect(() => {
-        setLoading(true)
+        // setIsLoading(true)
         fetchSingleNewsdetails()
-        setLoading(false)
+        // setIsLoading(false)
     }, [id])
 
     useEffect(() => {
@@ -122,13 +124,15 @@ const SingleNewsCommon = () => {
       console.log(savedNewsIds);
     })
 
-    if(loading){
-        return(
-            <div className={singleNewsCommonStyle.spinnerContainer}>
-              <ClipLoader color="#3498db" loading={loading} size={50} />
-            </div>
-        )
-    }
+  if(isLoading){
+    return(
+      <div className={singleNewsCommonStyle.gifContainer}>
+        <div className={singleNewsCommonStyle.gifDiv} >
+          <img src="https://i.pinimg.com/originals/b2/d4/b2/b2d4b2c0f0ff6c95b0d6021a430beda4.gif" alt="Saving..." className={singleNewsCommonStyle.gif} />
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className={`${singleNewsCommonStyle.TotalContainer} ${topDecision && singleNewsCommonStyle.TotalContainerTop}`}>

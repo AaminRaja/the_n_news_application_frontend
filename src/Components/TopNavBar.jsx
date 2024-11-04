@@ -9,6 +9,7 @@ const TopNavBar = () => {
     let[username, setUsername] = useState()
     let[navState, setNavState] = useState()
     let[isUserDrop, setIsUserDrop] = useState(false)
+    let[readerOrEditor, setReaderOrEditor] = useState(true)
 
     let {user, logoutFromTopNavbar, navStateInApp, getCurrentCategory, isBlurred} = useContext(AppContext)
 
@@ -28,7 +29,6 @@ const TopNavBar = () => {
             setUserLogged(false)
             setUsername('')
             setNavState('login')
-            // console.log(JSON.parse(localStorage.getItem('user')));
             logoutFromTopNavbar()
             navigateTo('/')
         }else{
@@ -43,7 +43,6 @@ const TopNavBar = () => {
     }
 
     let userDrop = () => {
-        console.log('User clicked');
         setIsUserDrop(!isUserDrop)
     }
 
@@ -67,6 +66,7 @@ const TopNavBar = () => {
     }
 
     let toHome = () => {
+        // console.log(user);
         if(!user){
             setNavState('login')
             navigateTo('/')
@@ -78,18 +78,24 @@ const TopNavBar = () => {
     }
 
     useEffect(() => {
-        // let userInLocalStorage = JSON.parse(localStorage.getItem('user'))
         let userInLocalStorage = localStorage.getItem('user')
-        console.log(userInLocalStorage);
-        console.log(Boolean(userInLocalStorage));
+        // console.log(userInLocalStorage);
         if(userInLocalStorage && userInLocalStorage !== "undefined"){
+            userInLocalStorage = JSON.parse(localStorage.getItem('user'))
+            // console.log(userInLocalStorage);
             setUserLogged(true)
             setNavState('logout')
+            // console.log(JSON.parse(localStorage.getItem('user')).Username);
             setUsername(JSON.parse(localStorage.getItem('user')).Username)
+            if(JSON.parse(localStorage.getItem('user')).Role === "Editor"){
+                setReaderOrEditor(false)
+            }else if(JSON.parse(localStorage.getItem('user')).Role === "Reader"){
+                setReaderOrEditor(true)
+            }
         }else{
             setUserLogged(false)
             let path = window.location.pathname
-            console.log(path);
+            // console.log(path);
             if(path ==='/login'){
                 setNavState('signup')
             }else{
@@ -108,12 +114,33 @@ const TopNavBar = () => {
     }, [])
 
     useEffect(() => {
-        console.log(user);
+        // console.log(user);
+        let userInLocalStorage = localStorage.getItem('user')
+        // console.log(userInLocalStorage);
+        
         if(user){
+            // console.log(user.Username);
             setUsername(user.Username)
             setUserLogged(true)
             setNavState('logout')
             setIsUserDrop(false)
+            if(user.Role === "Editor"){
+                setReaderOrEditor(false)
+            }else if(user.Role === "Reader"){
+                setReaderOrEditor(true)
+            }
+        }else if(userInLocalStorage && userInLocalStorage !== "undefined"){
+            userInLocalStorage = JSON.parse(localStorage.getItem('user'))
+            console.log(userInLocalStorage.Username);
+            setUsername(userInLocalStorage.Username)
+            setUserLogged(true)
+            setNavState('logout')
+            // setIsUserDrop(false)
+            if(JSON.parse(localStorage.getItem('user')).Role === "Editor"){
+                setReaderOrEditor(false)
+            }else if(JSON.parse(localStorage.getItem('user')).Role === "Reader"){
+                setReaderOrEditor(true)
+            }
         }else{
             setUsername('')
             setUserLogged(false)
@@ -123,17 +150,11 @@ const TopNavBar = () => {
     }, [user])
 
     useEffect(() => {
-        // let user = JSON.parse(localStorage.getItem('user'))
-        console.log(user);
-        if(user){
-            if(navStateInApp){
-                setNavState(navStateInApp)
-            }
+        if(navStateInApp){
+            setNavState(navStateInApp)
         }else{
-            // setNavState('signup')
             setUserLogged(false)
             let path = window.location.pathname
-            console.log(path);
             if(path ==='/login'){
                 setNavState('signup')
             }else{
@@ -147,9 +168,9 @@ const TopNavBar = () => {
         console.log(navState);
         console.log(navStateInApp);
         console.log(isUserDrop);
-        // console.log(username);
+        console.log(username);
         console.log(user);
-        console.log(pathname);
+        // console.log(pathname);
     })
         
   return (
@@ -171,7 +192,7 @@ const TopNavBar = () => {
                 {isUserDrop && <div className={TopNavStyle.userdrop} onClick={(e) => e.stopPropagation()}>
                     <ul>
                         <li onClick={toUserEdit}>Edit Profile</li>
-                        <li onClick={toSavedNews} ref={savedNewsLinkRef}>Saved Newses</li>
+                        {readerOrEditor && <li onClick={toSavedNews} ref={savedNewsLinkRef}>Saved Newses</li>}
                         <li onClick={linkClick}>Logout</li>
                     </ul>
                 </div>}

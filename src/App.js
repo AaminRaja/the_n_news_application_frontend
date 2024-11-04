@@ -16,6 +16,7 @@ import AdminHome from './Components/AdminHome';
 import AdminSingleCategory from './Components/AdminSingleCategory';
 import AdminSingleNewsCommon from './Components/AdminSingleNewsCommon';
 import AdminNewsEditor from './Components/AdminNewsEditor';
+import NotFound from './Components/NotFound';
 
 function App() {
   return (
@@ -69,6 +70,7 @@ function App() {
           <Route path='/login' element={<Login />} />
           <Route path='/signup' element={<Signup />} />
           <Route path='/:id' element={<SingleNewsCommon />} />
+          <Route path='*' element={<NotFound />} />
         </Routes>
       </AppProvider>
     </BrowserRouter >

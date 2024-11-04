@@ -13,6 +13,8 @@ const AdminSingleCategory = () => {
     let[newsByCategory, setNewsByCategory] = useState([])
     let[currentPageNumber, setCurrentPageNumber] = useState()
     let[totalnumberOfpages, setTotalNumberOfPages] = useState(1)
+    let[categoryHeading, setCategoryHeading] = useState()
+    let[isLoading, setIsLoading] = useState(false)
 
     let {currentCategoryInApp, logoutFromTopNavbar, getCurrentCategory} = useContext(AppContext)
 
@@ -22,17 +24,19 @@ const AdminSingleCategory = () => {
 
     let category = currentCategoryInApp
 
-    let newsPerPage = 9
+    let newsPerPage = 12
 
     let fetchByCategory = async() => {
       console.log(category);
         // & All News
         if(category === "Allnews"){
             try {
+                setIsLoading(true)
                 let {data} = await axios.get(`${process.env.REACT_APP_API_URL}/news/allNews?currentPageNumber=${currentPageNumber}&newsPerPage=${newsPerPage}`)
                 console.log(data?.allNews);
                 setNewsByCategory(data?.allNews)
                 setTotalNumberOfPages(data?.totalNumberOfPages)
+                setIsLoading(false)
             } catch (error) {
                 console.log(error);
             }    
@@ -42,6 +46,7 @@ const AdminSingleCategory = () => {
           console.log(newsPerPage);
           console.log(currentPageNumber);
           try {
+            setIsLoading(true)
             let accessToken = JSON.parse(localStorage.getItem('accessToken'))
             // console.log(`accessToken in NewsHome : ${accessToken}`);
       
@@ -55,11 +60,12 @@ const AdminSingleCategory = () => {
             console.log(response);
             setNewsByCategory(response.data.editorPickNewses)
             setTotalNumberOfPages(response.data.totalNumberOfPages)
-            
+            setIsLoading(false)
           } catch (error) {
             console.log(error);
             if(error.response && error.response.status === 403 && error.response.data.message === "Access token expired"){
               try {
+                setIsLoading(true)
                 let user = JSON.parse(localStorage.getItem('user'))
                 let response = await axios.post(`${process.env.REACT_APP_API_URL}/user/refreshAccessToken`, {user}, {withCredentials:true})
                 console.log(response);
@@ -81,6 +87,7 @@ const AdminSingleCategory = () => {
                   setNewsByCategory(data.editorPickNewses)
                   setTotalNumberOfPages(data.totalNumberOfPages)
                 }
+                setIsLoading(false)
               } catch (error) {
                 console.log(error);
                 if(error.response && error.response.status === 403 && error.response.data.message === "Refresh token expired"){
@@ -97,6 +104,7 @@ const AdminSingleCategory = () => {
           // & Breaking News
 
           try {
+            setIsLoading(true)
             let accessToken = JSON.parse(localStorage.getItem('accessToken'))
 
             let response = await axios.get(`${process.env.REACT_APP_API_URL}/news/fetchBreakingNewses?currentPageNumber=${currentPageNumber}&newsPerPage=${newsPerPage}`, {
@@ -108,7 +116,7 @@ const AdminSingleCategory = () => {
             console.log(response);
             setNewsByCategory(response.data.breakingNewses)
             setTotalNumberOfPages(response.data.totalNumberOfPages)
-
+            setIsLoading(false)
           } catch (error) {
             console.log(error);
           }
@@ -116,6 +124,7 @@ const AdminSingleCategory = () => {
           console.log("Enters topTen");
           // & Top Ten
           try {
+            setIsLoading(true)
             let accessToken = JSON.parse(localStorage.getItem('accessToken'))
             console.log(accessToken);
 
@@ -128,11 +137,12 @@ const AdminSingleCategory = () => {
             console.log(response);
             setNewsByCategory(response.data.topTenNewses)
             setTotalNumberOfPages(response.data.totalNumberOfPages)         
-            
+            setIsLoading(false)
           } catch (error) {
             console.log(error);
             if(error.response && error.response.status === 403 && error.response.data.message === "Access token expired"){
               try {
+                setIsLoading(true)
                 let user = JSON.parse(localStorage.getItem('user'))
                 let response = await axios.post(`${process.env.REACT_APP_API_URL}/user/refreshAccessToken`, {user}, {withCredentials:true})
                 console.log(response);
@@ -154,6 +164,7 @@ const AdminSingleCategory = () => {
                   setNewsByCategory(data.topTenNewses)
                   setTotalNumberOfPages(data.totalNumberOfPages)
                 }
+                setIsLoading(false)
               } catch (error) {
                 console.log(error);
                 if(error.response && error.response.status === 403 && error.response.data.message === "Refresh token expired"){
@@ -169,6 +180,7 @@ const AdminSingleCategory = () => {
         }else if(category === "Deletednews"){
           // & Deleted
           try {
+            setIsLoading(true)
             let accessToken = JSON.parse(localStorage.getItem('accessToken'))
 
             let response = await axios.get(`${process.env.REACT_APP_API_URL}/news/fetchDeletedNews?currentPageNumber=${currentPageNumber}&newsPerPage=${newsPerPage}`, {
@@ -180,11 +192,12 @@ const AdminSingleCategory = () => {
             console.log(response);
             setNewsByCategory(response.data.deletedNews)
             setTotalNumberOfPages(response.data.totalNumberOfPages)         
-            
+            setIsLoading(false)
           } catch (error) {
             console.log(error);
             if(error.response && error.response.status === 403 && error.response.data.message === "Access token expired"){
               try {
+                setIsLoading(true)
                 let user = JSON.parse(localStorage.getItem('user'))
                 let response = await axios.post(`${process.env.REACT_APP_API_URL}/user/refreshAccessToken`, {user}, {withCredentials:true})
                 console.log(response);
@@ -206,6 +219,7 @@ const AdminSingleCategory = () => {
                   setNewsByCategory(data.deletedNews)
                   setTotalNumberOfPages(data.totalNumberOfPages)
                 }
+                setIsLoading(false)
               } catch (error) {
                 console.log(error);
                 if(error.response && error.response.status === 403 && error.response.data.message === "Refresh token expired"){
@@ -221,10 +235,12 @@ const AdminSingleCategory = () => {
         }else{
           // & categories
           try {
+            setIsLoading(true)
             let response = await axios.get(`${process.env.REACT_APP_API_URL}/news/filterByCategory?category=${category}&currentPageNumber=${currentPageNumber}&newsPerPage=${newsPerPage}`)
             console.log(response);
             setNewsByCategory(response.data.filteredNewsByCategory)
             setTotalNumberOfPages(response.data.totalNumberOfPages)
+            setIsLoading(false)
           } catch (error) {
             console.log(error);
           }
@@ -311,6 +327,25 @@ const AdminSingleCategory = () => {
     
     useEffect(() => {
       fetchByCategory()
+      switch(category){
+        case "Allnews":
+          setCategoryHeading("All News")
+          break
+        case "Editorspick":
+          setCategoryHeading("Editor's Pick")
+          break
+        case "Breakingnews":
+          setCategoryHeading("Breaking News")
+          break
+        case "Topten":
+          setCategoryHeading("Top Ten News")
+          break
+        case "Deletednews":
+          setCategoryHeading("Deleted News")
+          break
+        default:
+          setCategoryHeading(category)
+      }
       window.scrollTo(0, 0);
     }, [currentCategoryInApp, currentPageNumber])
 
@@ -322,8 +357,21 @@ const AdminSingleCategory = () => {
       console.log(newsByCategory);
     })
 
+    if(isLoading){
+      return(
+        <div className={adminSingleCatStyle.gifContainer}>
+          <div className={adminSingleCatStyle.gifDiv} >
+            <img src="https://i.pinimg.com/originals/b2/d4/b2/b2d4b2c0f0ff6c95b0d6021a430beda4.gif" alt="Saving..." className={adminSingleCatStyle.gif} />
+          </div>
+        </div>
+      )
+    }
+
   return (
     <div className={adminSingleCatStyle.TotalContainer}>
+        <div className={adminSingleCatStyle.pageHeadingContainer}>
+          <h1 className={adminSingleCatStyle.pageHeading}>{categoryHeading}</h1> 
+        </div>
         <div className={adminSingleCatStyle.newsListContainer}>
             {newsByCategory?.map((news) => {
                 return(

@@ -12,7 +12,7 @@ import { MdDeleteOutline } from "react-icons/md";
 const AdminSingleNewsCommon = () => {
     
     let[newsDetails, setNewsDetails] = useState()
-    let[loading, setLoading] = useState(false)
+    let[isLoading, setIsLoading] = useState(false)
     let[filteredByCategory, setFilteredByCategory] = useState([])
     let[deleteConfirmation, setDeleteConfirmation]= useState(false)
 
@@ -29,6 +29,7 @@ const AdminSingleNewsCommon = () => {
 
     let fetchSingleNewsdetails = async() => {
         try {
+            setIsLoading(true)
             let singleResponse = await axios.get(`${process.env.REACT_APP_API_URL}/news/fetchSingleNews/${id}`)
             let singleNews = singleResponse.data.singleNews
             let formattedDate = format(singleNews.PublishedDateAndTime, 'MMMM dd, yyyy')
@@ -47,6 +48,7 @@ const AdminSingleNewsCommon = () => {
             filteredArrayBycategory = filteredArrayBycategory
             console.log(filteredArrayBycategory);
             setFilteredByCategory(filteredArrayBycategory)
+            setIsLoading(false)
         } catch (error) {
             console.log(error);
         }
@@ -99,6 +101,7 @@ const AdminSingleNewsCommon = () => {
 
     let deleteNews = async(id) => {
         try {
+            setIsLoading(true)
             let accessToken = JSON.parse(localStorage.getItem('accessToken'))
             console.log(accessToken);
 
@@ -114,10 +117,13 @@ const AdminSingleNewsCommon = () => {
                 setDeleteConfirmation(false)
                 navigateTo(-1)
             }
+
+            setIsLoading(false)
         } catch (error) {
             console.log(error);
             if(error.response && error.response.status === 403 && error.response.data.message === "Access token expired"){
                 try {
+                  setIsLoading(true)
                   let user = JSON.parse(localStorage.getItem('user'))
                   let response = await axios.post(`${process.env.REACT_APP_API_URL}/user/refreshAccessToken`, {user}, {withCredentials:true})
                   console.log(response);
@@ -135,8 +141,9 @@ const AdminSingleNewsCommon = () => {
                       withCredentials:true}
                     )
                     console.log(data);
-        
+                    
                   }
+                  setIsLoading(false)
                 } catch (error) {
                   console.log(error);
                   if(error.response && error.response.status === 403 && error.response.data.message === "Refresh token expired"){
@@ -163,9 +170,7 @@ const AdminSingleNewsCommon = () => {
     }, [newsDetails, filteredByCategory])
 
    useEffect(() => {
-        setLoading(true)
         fetchSingleNewsdetails()
-        setLoading(false)
     }, [id])
 
     useEffect(() => {
@@ -186,6 +191,17 @@ const AdminSingleNewsCommon = () => {
     useEffect(() => {
         getIsBlurred(deleteConfirmation)
     }, [deleteConfirmation])
+    
+    if(isLoading){
+      return(
+        <div className={adminSingleNewsStyle.gifContainer}>
+          <div className={adminSingleNewsStyle.gifDiv} >
+            <img src="https://i.pinimg.com/originals/b2/d4/b2/b2d4b2c0f0ff6c95b0d6021a430beda4.gif" alt="Saving..." className={adminSingleNewsStyle.gif} />
+          </div>
+        </div>
+      )
+    }
+  
   return (
     <div className={adminSingleNewsStyle.TotalContainer}>
       {deleteConfirmation && <div className={adminSingleNewsStyle.confirmationDiv}>

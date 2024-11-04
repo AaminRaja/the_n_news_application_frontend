@@ -21,6 +21,7 @@ const Login = () => {
     let[isPassword, setIsPassword] = useState(true)
     let[identifierAbsent, setIdentifierAbsent] = useState(false)
     let[passwordAbsent, setPasswordAbsent] = useState(false)
+    let[isLoading, setIsLoading] = useState(false)
     // set[easyLogoutVisible, setEasyLogoutVisible] = useState(false)
     //& when going back to login or signup pages by clicking the direction buttons in the browser, causing problem. to avoid that use a easy logout component for that
 
@@ -72,9 +73,10 @@ const Login = () => {
             }else if(!formData.Password){
                 setPasswordAbsent(true)
             }else{
+                setIsLoading(true)
                 console.log(process.env.REACT_APP_API_URL);
                 // let response = await axios.post(`${process.env.REACT_APP_API_URL}/user/userLogin`, formData , {withCredentials: true})
-                let response = await axios.post(`${process.env.REACT_APP_API_URL}/user/userLogin`, formData )
+                let response = await axios.post(`${process.env.REACT_APP_API_URL}/user/userLogin`, formData, {withCredentials: true} )
                 console.log(response);
                 console.log(response?.data);
                 let userFromBackend = response.data.user
@@ -90,8 +92,9 @@ const Login = () => {
                 }else if(userFromBackend?.Role === "Editor"){
                     navigateToNewses('/admin')
                 }
-                // console.log(JSON.parse(localStorage.getItem('user')));
-                // console.log(JSON.parse(localStorage.getItem('accessToken')));
+                console.log(JSON.parse(localStorage.getItem('user')));
+                console.log(JSON.parse(localStorage.getItem('accessToken')));
+                setIsLoading(false)
             }
         } catch (error) {
             console.log(error);
@@ -105,6 +108,7 @@ const Login = () => {
             }else if(errorStatus === 401){
                 setError(`Invalid password`)
             }
+            setIsLoading(false)
         }
     }
 
@@ -139,6 +143,16 @@ const Login = () => {
             console.log('Enter Second');
         }
     }, [])
+
+    if(isLoading){
+        return(
+          <div className={loginStyle.gifContainer}>
+            <div className={loginStyle.gifDiv} >
+              <img src="https://i.pinimg.com/originals/b2/d4/b2/b2d4b2c0f0ff6c95b0d6021a430beda4.gif" alt="Saving..." className={loginStyle.gif} />
+            </div>
+          </div>
+        )
+      }
 
   return (
     <div className={loginStyle.Container}>
